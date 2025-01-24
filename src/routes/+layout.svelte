@@ -5,14 +5,14 @@
 </svelte:head>
 
 <script>
-	import Navbar from '$lib/Components/Navbar.svelte';
 	import '../app.css';
+
+	
 	let { children } = $props();
 </script>
 
 
 <main class="">
-	<Navbar/>
 	{@render children()}
 </main>
 

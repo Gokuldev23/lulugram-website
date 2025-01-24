@@ -4,7 +4,7 @@
         <div class="md:order-2">
             <img class="" src="/carrer.svg" alt="">
         </div>
-        <p class="md:text-lg/10 text-base/7 font-medium tracking-wider  md:text-left text-justify">
+        <p class="md:text-lg/10 text-base/6 font-medium tracking-wider  md:text-left text-justify">
             At Lulugram, we believe that a fulfilling career is built upon a foundation of passion, growth,
             and purpose. We are dedicated to providing our employees with a dynamic and inclusive work
             environment where they can thrive and contribute to meaningful projects. Our commitment to

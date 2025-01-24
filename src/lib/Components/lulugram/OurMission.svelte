@@ -6,7 +6,7 @@
         <div>
             <img class="" src="/vision.svg" alt="">
         </div>
-        <p class="md:text-lg/10 text-base/7 font-medium tracking-wider  md:text-left text-justify">
+        <p class="md:text-lg/10 text-base/6 font-medium tracking-wider  md:text-left text-justify">
             Our vision is to develop leading edge software products for IT including AI and VR and Scientific Computing
             for our inhouse platforms as well as for customers. We envision to launch multiple platforms for varied use
             cases in future. Presently we are completely focussed to launch our social media platform 'GramLok' on 29th April,

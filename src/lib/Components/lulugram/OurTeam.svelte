@@ -1,5 +1,5 @@
 <script>
-	import { teamMembers } from "$lib/js/team";
+	import { teamMembers } from "$lib/js/lulugram/team";
 
     
 </script>

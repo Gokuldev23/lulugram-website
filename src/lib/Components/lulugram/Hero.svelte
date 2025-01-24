@@ -1,12 +1,15 @@
 <script>
     import Icon from "@iconify/svelte";
     
-	import { projects } from "$lib/js/projects";
+	import { projects } from "$lib/js/lulugram/projects";
 
 	import Project from "./Project.svelte";
+	import Modal from "../common/Modal.svelte";
 
 
-
+    const handleProjectExpand = (e) => {
+        console.log(e);
+    }
 
 </script>
 
@@ -39,11 +42,18 @@
 
     <div class=" border-2 border-blue-500 md:p-4 p-2 mt-10 md:max-w-6xl max-w-lg mx-auto rounded-3xl relative pt-10">
         <h2 class="text-3xl text-center left-1/2 -translate-x-1/2 absolute -top-5 uppercase font-semibold text-blue-600 bg-white ">Our Apps</h2>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-6">
+        <div id="project-container" class="flex flex-nowrap items-center gap-2 md:gap-6 overflow-scroll">
            {#each projects as project}
-                <Project project = {project}/>
+                <Project onProjectClicked={handleProjectExpand} project = {project}/>
            {/each}
         </div>
     </div>
 
 </section>
+
+
+<style>
+    #project-container{
+        scrollbar-width: none;
+    }
+</style>

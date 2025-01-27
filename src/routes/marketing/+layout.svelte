@@ -1,3 +1,7 @@
+<svelte:head>
+    <title>Lulugram Marketing</title>
+</svelte:head>
+
 <script>
 
 

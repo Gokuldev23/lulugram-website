@@ -6,6 +6,7 @@
 
 <script>
 	import '../app.css';
+	import Footer from '$lib/Components/Footer.svelte';
 
 	
 	let { children } = $props();
@@ -13,7 +14,10 @@
 
 
 <main class="">
-	{@render children()}
+	<div id="slot" class="min-h-dvh">
+		{@render children()}
+	</div>
+	<Footer/>
 </main>
 
 

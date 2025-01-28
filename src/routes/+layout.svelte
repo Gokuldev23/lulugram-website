@@ -17,7 +17,6 @@
 	<div id="slot" class="min-h-dvh">
 		{@render children()}
 	</div>
-	<Footer/>
 </main>
 
 

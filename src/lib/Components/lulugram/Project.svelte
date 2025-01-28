@@ -12,7 +12,7 @@
     <p class="text-sm w-fit mx-auto my-3 px-3 rounded-xl bg-orange-600 text-white font-semibold">{project.type}</p>
     <p class="md:text-lg  text-blue-600 font-bold italic my-4">{project.tagLine}</p>
     <div class="flex items-center justify-center gap-2 text-green-600 font-medium">
-        <a class="" href="/projects/{project.title}">View Project</a>
+        <a class="" href="/lulugram/projects/{project.title}">View Project</a>
         <Icon class="" icon="akar-icons:arrow-right" />
     </div>
 </div>

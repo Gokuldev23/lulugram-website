@@ -2,6 +2,8 @@
 
 	import {validateOTP} from '$lib/js/marketing/utils';
 
+	import { userRegisterVerify } from '$lib/js/marketing/api/auth';
+
     import Card from '$lib/Components/common/Card.svelte';
     import InputField from '$lib/Components/common/InputField.svelte';
 
@@ -9,6 +11,7 @@
     let t_enter_otp = "Enter OTP";
     let t_otp_sent = "OTP has been sent to your Mobile";
     let t_submit = "Submit";
+    let t_resend_otp = "Resend OTP?"
 
     let t_otpErr = $state(null)
     let disabled = $state(true)
@@ -29,11 +32,12 @@
     });
 
     const resendOtp = async () => {
-
+        
     }
     
     const handleOtpSubmit = async () => {
-        console.log('OTP:', otp);
+
+        let result = await userRegisterVerify()
     }
 </script>
 
@@ -43,14 +47,11 @@
         <p class="text-green-500 text-center my-4 font-semibold">{t_otp_sent}</p>
 
         <form onsubmit={handleOtpSubmit} class="w-full">
-            <InputField
-                type="number"
-                required={true}
-                label="Enter OTP"
-                bind:value={otp}
-                errorMsg={t_otpErr}
-            />
-            <button type="button" class="text-sm text-violet-500 font-medium">Resend OTP?</button>
+
+            <InputField type="number" required={true} label="Enter OTP" bind:value={otp} errorMsg={t_otpErr}/>
+
+            <button type="button" class="text-sm text-violet-500 font-medium">{t_resend_otp}</button>
+            
             <button
                 class="bg-violet-600 hover:bg-blue-700 disabled:bg-gray-500 disabled:opacity-35 w-full text-white font-bold py-2 px-4 rounded mt-4"
                 type="submit"

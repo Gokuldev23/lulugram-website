@@ -51,10 +51,12 @@ export const validateAddress = (address) => {
 }
 
 
-export const checkFields = (name,mobile,password) => {
+export const checkFields = (name,mobile,password,address) => {
 
     const areBasicFieldsFilled = name?.trim() && mobile?.toString().trim() && password?.trim();
 
-    return !!areBasicFieldsFilled
+    const isAddressValid = validateAddress(address)
+
+    return !!(areBasicFieldsFilled && isAddressValid)
 
 }

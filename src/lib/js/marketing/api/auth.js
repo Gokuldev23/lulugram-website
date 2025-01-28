@@ -2,13 +2,14 @@ import dataUrlRoot from "$lib/js/dataUrlRoot"
 import { otpStore } from "$lib/stores/marketing/otpStore"
 
 
-export const userTempRegister = async (userName,password,mobileNumber, isTcAgreed) => {
+export const userTempRegister = async (userName,password,mobileNumber,address, isTcAgreed) => {
 
     let url = `${dataUrlRoot}/agent/auth/temp-register`
 
     let data = {
         userName,
         userId:mobileNumber,
+        address,
         password,
         isTcAgreed
     }
@@ -113,5 +114,9 @@ export const forgotpassword = async () => {
 
 
 export const changeForgotPassword = async () => {
+
+}
+
+export const resendOtp = async () => {
 
 }

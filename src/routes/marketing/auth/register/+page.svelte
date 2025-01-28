@@ -11,7 +11,7 @@
 	import AddressForm from "$lib/Components/marketing/AddressForm.svelte";
 	import AlertModal from "$lib/Components/common/AlertModal.svelte";
 
-    
+
 
     let t_register = "Register"
     let t_already_agent = "Already an Agent?"
@@ -19,7 +19,7 @@
     let t_agree_to = "I agree to the"
     let t_tnc = "Terms and conditions"
 
-    let form = null
+    let address = {}
 
     let agentName = $state("")
     let agentMobile = $state("")
@@ -28,8 +28,10 @@
     let tcAgreed = $state(false)
     let disabled = $state(true)
 
-
-    let address = $state({district:"",city:"",state:"",pincode:null})
+    let district = $state('')
+    let city = $state('')
+    let state = $state('')
+    let pincode = $state(null)
 
     let t_nameErr = $state(null)
     let t_passwordErr = $state(null)
@@ -46,7 +48,14 @@
         t_passwordErr = isValidPassword ? null : "Password should contain atleast 1 Uppercase, 1 lowercase , 1 Number and 1 symbol"
         t_mobileErr = isValidMobileNo ? null : "Mobile is not valid"
 
-        let isFormFilled = checkFields(agentName,agentMobile,agentPassword)
+        address = {
+            district,
+            city,
+            state,
+            pincode
+        }
+
+        let isFormFilled = checkFields(agentName,agentMobile,agentPassword,address)
 
         if( !isValidMobileNo || !isValidPassword || !isValidName || !isFormFilled || !tcAgreed){
             disabled = true
@@ -59,7 +68,8 @@
     const closeAlert = () => errorSubmit = ""
 
     const handleRegisterAgent = async () => {
-        let result = await userTempRegister(agentName,agentPassword,agentMobile,tcAgreed)
+
+        let result = await userTempRegister(agentName,agentPassword,agentMobile,address,tcAgreed)
 
         if(result.success){
             goto('/marketing/auth/otp')
@@ -87,26 +97,27 @@
     {/if}
 
     <Card class="max-w-lg mx-auto w-full">
-        <form onsubmit={handleRegisterAgent} bind:this={form} class=" space-y-6">
+        <form onsubmit={handleRegisterAgent}  class=" space-y-6">
             <h1 class="text-center md:text-3xl text-xl uppercase text-slate-700 font-bold mb-6">{t_register}</h1>
+
             <InputField label={"Name"} required={true} bind:value={agentName} errorMsg={t_nameErr}/>
 
-            <div class="flex gap-1">
+            <div id="mobile-input" class="flex gap-1">
                 <select bind:value={countryCode} class="rounded-l-lg" name="" id="">
                     <option value="+91">+91</option>
                 </select>
-                <InputField required={true} label={"Mobile No"}   type={"number"} bind:value={agentMobile}/>
+                <InputField required={true} label={"Mobile No"}    type={"number"} bind:value={agentMobile}/>
             </div>
 
-            <div id="password">
+            <div id="password-input">
                 <InputField label={"Password"} required={true} type={"password"} bind:value={agentPassword} errorMsg={t_passwordErr}/>
             </div>
 
-            <AddressForm bind:district={address.district} bind:city={address.city} bind:state={address.state} bind:pincode={address.pincode}/>
+            <AddressForm bind:district={district} bind:city={city} bind:state={state} bind:pincode={pincode}/>
 
             <div class="">
 
-                <div class="my-4">
+                <div id="checkbox-input" class="my-4">
                     <input bind:checked={tcAgreed} type="checkbox" name="tc" id="tc">
                     <label for="tc"> {t_agree_to} <a class="text-violet-500 font-medium" href="/marketing/tnc">{t_tnc}</a> </label>
                 </div>

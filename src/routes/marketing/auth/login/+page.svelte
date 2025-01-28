@@ -7,8 +7,8 @@
     let t_login = "Login"
     let t_register_here = "Register here!"
     let t_not_agent = "Not an Agent?"
+    let t_forgotpassword = "Forgot password?"
 
-    let form = null
 
     let t_mobileErr = $state(null)
     let t_passwordErr = $state(null)
@@ -24,11 +24,7 @@
         t_mobileErr = isValidMobile ? null : "Mobile is not valid"
         t_passwordErr = isValidPassword ? null : "Password is not valid"
 
-        let isFormValid = form?.checkValidity()
-
-        console.log({isFormValid})
-
-        if( !isValidMobile || !isValidPassword || !isFormValid ){
+        if( !isValidMobile || !isValidPassword || agentMobile == null || !agentPassword ){
             disabled = true
         }else{
             disabled = false
@@ -46,12 +42,14 @@
 
 <main class="py-20 flex items-center px-4">
     <Card class=" max-w-lg mx-auto w-full">
-        <form onsubmit={handleLoginAgent}  bind:this={form} class="space-y-6">
+        <form onsubmit={handleLoginAgent}  class="space-y-6">
             <h1 class="text-center md:text-3xl text-2xl  uppercase text-slate-700 font-bold mb-6">{t_login}</h1>
+
             <InputField label={"Mobile No"} required={true} type={"number"} bind:value={agentMobile} errorMsg={t_mobileErr}/>
+
             <InputField label={"Password"} required={true} type={"password"} bind:value={agentPassword} errorMsg={t_passwordErr}/>
 
-            <a class="text-xs  block text-violet-500" href="/marketing/auth/forgot-password">Forgot password?</a>
+            <a class="text-xs  block text-violet-500" href="/marketing/auth/forgot-password">{t_forgotpassword}</a>
 
             <div class="">
                 <button type="submit" disabled={disabled} class="px-4 block w-full py-2 bg-violet-500 disabled:bg-gray-500 disabled:opacity-40 text-white 
@@ -62,8 +60,8 @@
                     <a href="/marketing/auth/register" class="text-violet-600 hover:text-violet-800">{t_register_here}</a>
                 </p>
             </div>
-        </form>
 
+        </form>
     </Card>
     
 </main>

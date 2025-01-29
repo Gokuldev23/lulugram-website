@@ -1,297 +1,332 @@
-import dataUrlRoot from "$lib/js/dataUrlRoot"
-import { agentStore } from "$lib/stores/marketing/agentStore"
-import { otpStore } from "$lib/stores/marketing/otpStore"
+import dataUrlRoot from '$lib/js/dataUrlRoot';
+import { agentStore } from '$lib/stores/marketing/agentStore';
+import { otpStore } from '$lib/stores/marketing/otpStore';
 
+export const getAgentStatus = async () => {
+	try {
+		const res = await fetch(`${dataUrlRoot}/agents/auth/agent-status`, {
+			method: 'GET',
+			mode: 'cors',
+			credentials: 'include'
+		});
+		const result = await res.json();
 
+        let agentData = result.data
 
-export const getAgentStatus = async ()=>{
-    try {
-        const res = await fetch(`${dataUrlRoot}/agent/auth/agent-data`,{
-            method: 'GET',
-            mode: 'cors',
-            credentials: 'include'
-        })
-        const agentdata = await res.json()
-        return agentdata
-    }
-    catch(e) {
-        // agentStore.set({ signedIn: false, agentUid:"", agentId: "", agentName: "", token:""})
-        console.log(e)
-    }
-}
-
-export const agentTempRegister = async (agentName,password,mobileNumber,countryCode,address, isTcAgreed) => {
-
-    let url = `${dataUrlRoot}/agents/auth/temp-register`
-
-    let data = {
-        agentName,
-        agentId:mobileNumber,
-        countryCode,
-        address,
-        password,
-        isTcAgreed
-    }
-
-    try {
-        let response = await fetch(url,{
-            method:'POST',
-            headers: {
-                'Content-Type': 'application/json', // Set the content type
-            },    
-            body:JSON.stringify(data)
-        })
-        let result = await response.json()
-        if(result.success){
-            let otpToken = result.otpToken
-            let agentUid = result.data.agent_uid 
-            let agentId = result.data.agent_id
-
-            otpStore.set({
-                agentUid,
-                agentId,
-                otp:'',
-                otpToken,
-            })
+		let data = {
+            signedIn:true,
+            a_token:result.a_token,
+            agentUid: agentData.agent_uid,
+            agentId: agentData.agent_id,
+            agentName: agentData.agentname,
+            email: agentData.email,
+            phone: agentData.phone_number,
+            address: agentData.address,
+            referralCode: agentData.agent_referal_code,
+            referralCount: agentData.referral_count,
+            createdAt: agentData.created_at,
+            countryCode: agentData.country_code,
+            countryName: agentData.country_name,
+            emailVerified: agentData.email_verified,
+            bankVerified: agentData.bank_verified,
+            aadharVerified: agentData.adhar_verified,
+            profilePic: agentData.profile_pic_url,
+            profileImageSizes: agentData.profile_image_sizes,
+            expiresIn: result.expiresIn
         }
-        return result
-    } catch (error) {
-        console.log(error)
-        return {success:false,message:'error fetching'}; 
-    }
+         
+        agentStore.set({...data})
 
-}
+		return result;
+	} catch (e) {
+		agentStore.set({ signedIn: false, agentUid: '', agentId: '', agentName: '', token: '' });
+		console.log(e);
+	}
+};
 
+export const agentTempRegister = async (agentName,password,mobileNumber,countryCode,address,isTcAgreed) => {
 
-export const agentRegisterVerify = async (otp,otpToken,otpTokenPrev,agentUid) => {
+	let url = `${dataUrlRoot}/agents/auth/temp-register`;
 
-    let url = `${dataUrlRoot}/agents/auth/register`
+	let data = {
+		agentName,
+		agentId: mobileNumber,
+		countryCode,
+		address,
+		password,
+		isTcAgreed
+	};
 
-    let data = {
-        agentUid,
-        otp,
-        otpToken,
-        otpTokenPrev
-    }
+	try {
+		let response = await fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json' // Set the content type
+			},
+			body: JSON.stringify(data)
+		});
+		let result = await response.json();
+		if (result.success) {
+			let otpToken = result.otpToken;
+			let agentUid = result.data.agent_uid;
+			let agentId = result.data.agent_id;
 
-    try {
-        let response = await fetch(url,{
-            method:'POST',
-            mode: 'cors',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-            },    
-            body:JSON.stringify(data)
-        })
-        let result = await response.json()
+			otpStore.set({
+				agentUid,
+				agentId,
+				otp: '',
+				otpToken
+			});
+		}
+		return result;
+	} catch (error) {
+		console.log(error);
+		return { success: false, message: 'error fetching' };
+	}
+};
 
-        if(result.success){
-            let agentData = result.data
-            agentStore.set({...agentData})
-        }
-        return result
-    } catch (error) {
-        console.log(error)
-        return {success:false,message:'error fetching'}; 
-    }   
-}
+export const agentRegisterVerify = async (otp, otpToken, otpTokenPrev, agentUid) => {
+	let url = `${dataUrlRoot}/agents/auth/register`;
+
+	let data = {
+		agentUid,
+		otp,
+		otpToken,
+		otpTokenPrev
+	};
+
+	try {
+		let response = await fetch(url, {
+			method: 'POST',
+			mode: 'cors',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(data)
+		});
+		let result = await response.json();
+
+		if (result.success) {
+			let agentData = result.data;
+			agentStore.set({ ...agentData });
+		}
+		return result;
+	} catch (error) {
+		console.log(error);
+		return { success: false, message: 'error fetching' };
+	}
+};
 
 export const agentLogin = async (agentId, password, countryCode) => {
-    let url = `${dataUrlRoot}/agents/auth/login`
+	let url = `${dataUrlRoot}/agents/auth/login`;
 
-    let data = {
-        agentId,
-        password,
-        countryCode
-    }
+	let data = {
+		agentId,
+		password,
+		countryCode
+	};
 
-    try {
-        let response = await fetch(url,{
-            method:'POST',
-            mode: 'cors',
-            credentials: 'include',
-          
-            headers: {
-                'Content-Type': 'application/json', // Set the content type
-            },    
-            body:JSON.stringify(data)
-        })
-        let result = await response.json()
+	try {
+		let response = await fetch(url, {
+			method: 'POST',
+			mode: 'cors',
+			credentials: 'include',
 
-        if(result.success){
-            let agentData = result.data
-            agentStore.set({...agentData})
-        }
-   
-        return result
-    } catch (error) {
-        console.log(error)
-        return {success:false,message:'Network Error!'}; 
-    }
-}
+			headers: {
+				'Content-Type': 'application/json' // Set the content type
+			},
+			body: JSON.stringify(data)
+		});
+		let result = await response.json();
 
+		if (result.success) {
+			let agentData = result.data;
+			agentStore.set({ signedIn:true,...agentData });
+		}
 
-export const forgotpassword = async () => {
+		return result;
+	} catch (error) {
+		console.log(error);
+		return { success: false, message: 'Network Error!' };
+	}
+};
 
-}
+export const forgotpassword = async (agentId, countryCode) => {
+	let url = `${dataUrlRoot}/agents/auth/forgot-password`;
 
-export const changePassword = async (currentPassword,newPassword,a_token) => {
+	let data = {
+		agentId,
+		countryCode
+	};
+	try {
+		const res = await fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json' // Set the content type
+			},
+			body: JSON.stringify(data)
+		});
 
-    let url = `${dataUrlRoot}/agents/auth/change-password`
+		const result = await res.json();
+		if (result.success) {
+			let otpToken = result.otpToken;
+			let agentUid = result.agentUid;
+			let agentId = result.agentId;
 
-    let data = {
-        currentPassword,
-        newPassword,
-        confirmNewPassword:newPassword
-    }
+			otpStore.set({
+				agentUid,
+				agentId,
+				otp: '',
+				otpToken
+			});
+		}
+		return result;
+	} catch (error) {
+		console.error(`Error fetching crossword: ${error.message}`);
+		return { success: false, message: 'error fetching' };
+	}
+};
 
-    try {
-        const res = await fetch(url, {
-            method:'POST',
-            headers: {
-                'Authorization': `Bearer ${a_token}`,
-                'Content-Type': 'application/json', // Set the content type
-            },
-            body:JSON.stringify(data)
-        });
+export const changePassword = async (currentPassword, newPassword, a_token) => {
+	let url = `${dataUrlRoot}/agents/auth/change-password`;
 
-        const response = await res.json();
-        return response;
-    } catch (error) {
-        console.error(`Error fetching crossword: ${error.message}`);
-        return {success:false,message:'error fetching'}; 
-    }
-}
+	let data = {
+		currentPassword,
+		newPassword,
+		confirmNewPassword: newPassword
+	};
 
-export const changeForgotPassword = async (agentUid,password,otp,otpToken,otpTokenPrev) => {
+	try {
+		const res = await fetch(url, {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${a_token}`,
+				'Content-Type': 'application/json' // Set the content type
+			},
+			body: JSON.stringify(data)
+		});
 
-    let url = `${dataUrlRoot}/agent/auth/change-forgot-password`
+		const response = await res.json();
+		return response;
+	} catch (error) {
+		console.error(`Error fetching crossword: ${error.message}`);
+		return { success: false, message: 'error fetching' };
+	}
+};
 
-    let data = {
-        agentUid,
-        password,
-        confirmPassword:password,
-        otp,
-        otpToken,
-        otpTokenPrev
-    }
+export const changeForgotPassword = async (agentUid, password, otp, otpToken, otpTokenPrev) => {
+	let url = `${dataUrlRoot}/agents/auth/change-forgot-password`;
 
-    try {
-        const res = await fetch(url, {
-            method:'POST',
-            headers: {
-                'Content-Type': 'application/json', // Set the content type
-            },
-            body:JSON.stringify(data)
-        });
+	let data = {
+		agentUid,
+		password,
+		confirmPassword: password,
+		otp,
+		otpToken,
+		otpTokenPrev
+	};
 
-        const response = await res.json();
-        return response;
-    } catch (error) {
-        console.error(`Error fetching crossword: ${error.message}`);
-        return {success:false,message:'error fetching'}; 
-    }
-}
+	try {
+		const res = await fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json' // Set the content type
+			},
+			body: JSON.stringify(data)
+		});
 
-export const resendOtp = async (agentId,agentUid,id_type,count, countryName) => {
+		const response = await res.json();
+		return response;
+	} catch (error) {
+		console.error(`Error fetching crossword: ${error.message}`);
+		return { success: false, message: 'error fetching' };
+	}
+};
 
-    let url = `${dataUrlRoot}/agent/auth/resend-otp`
+export const resendOtp = async (agentId, agentUid, count) => {
+	let url = `${dataUrlRoot}/agents/auth/resend-otp`;
 
-    let data = {
-        agentId,
-        agentUid,
-        id_type,
-        count,
-        countryName
-    }
+	let data = {
+		agentId,
+		agentUid,
+		count
+	};
 
-    try {
-        const res = await fetch(url, {
-            method:'POST',
-            headers: {
-                'Content-Type': 'application/json', // Set the content type
-            },
-            body:JSON.stringify(data)
-        });
+	try {
+		const res = await fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json' // Set the content type
+			},
+			body: JSON.stringify(data)
+		});
 
-        const response = await res.json();
-        return response;
-    } catch (error) {
-        console.error(`Error fetching crossword: ${error.message}`);
-        return {success:false,message:'error fetching'}; 
-    }
-
-}
-
-
+		const response = await res.json();
+		return response;
+	} catch (error) {
+		console.error(`Error fetching crossword: ${error.message}`);
+		return { success: false, message: 'error fetching' };
+	}
+};
 
 export const logoutAgent = async () => {
+	let url = `${dataUrlRoot}/agent/auth/logout`;
 
-    let url = `${dataUrlRoot}/agent/auth/logout`
+	try {
+		const res = await fetch(url, {
+			method: 'GET',
+			credentials: 'include',
+			mode: 'cors'
+		});
 
-    try {
-        const res = await fetch(url, {
-            method:'GET',
-            credentials:'include',
-            mode:'cors'
-        });
-
-        const response = await res.json();
-        if(response.success) {
-            // clearRefreshTimer()
-        }
-        return response
-    } catch (error) {
-        console.error(`Error fetching crossword: ${error.message}`);
-        return {success:false,message:'error fetching'}; 
-    }
-
-}
-
+		const response = await res.json();
+		if (response.success) {
+			// clearRefreshTimer()
+		}
+		return response;
+	} catch (error) {
+		console.error(`Error fetching crossword: ${error.message}`);
+		return { success: false, message: 'error fetching' };
+	}
+};
 
 export const deleteAccountVerify = async (a_token) => {
+	let url = `${dataUrlRoot}/agent/account/send-otp`;
 
-    let url = `${dataUrlRoot}/agent/account/send-otp`
+	try {
+		const res = await fetch(url, {
+			method: 'GET',
+			headers: {
+				Authorization: `Bearer ${a_token}`
+			}
+		});
 
-    try {
-        const res = await fetch(url, {
-            method:'GET',
-            headers: {
-                'Authorization': `Bearer ${a_token}`,
-            },
-        });
+		const response = await res.json();
+		return response;
+	} catch (error) {
+		console.error(`Error fetching crossword: ${error.message}`);
+		return { success: false, message: 'error fetching' };
+	}
+};
 
-        const response = await res.json();
-        return response;
-    } catch (error) {
-        console.error(`Error fetching crossword: ${error.message}`);
-        return {success:false,message:'error fetching'}; 
-    }
+export const confirmDeleteAccount = async (a_token, data) => {
+	let url = `${dataUrlRoot}/agent/account/delete`;
 
-}
+	try {
+		const res = await fetch(url, {
+			method: 'PUT',
+			headers: {
+				Authorization: `Bearer ${a_token}`,
+				'Content-Type': 'application/json' // Ensure the server understands you're sending JSON
+			},
+			body: JSON.stringify(data)
+		});
 
-
-
-export const confirmDeleteAccount = async (a_token,data) => {
-
-    let url = `${dataUrlRoot}/agent/account/delete`
-
-    try {
-        const res = await fetch(url, {
-            method:'PUT',
-            headers: {
-                'Authorization': `Bearer ${a_token}`,
-                'Content-Type': 'application/json', // Ensure the server understands you're sending JSON
-            },
-            body:JSON.stringify(data)
-        });
-
-        const response = await res.json();
-        return response;
-    } catch (error) {
-        console.error(`Error fetching crossword: ${error.message}`);
-        return {success:false,message:'error fetching'}; 
-    }
-
-}
+		const response = await res.json();
+		return response;
+	} catch (error) {
+		console.error(`Error fetching crossword: ${error.message}`);
+		return { success: false, message: 'error fetching' };
+	}
+};

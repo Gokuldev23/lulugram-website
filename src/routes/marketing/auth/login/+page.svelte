@@ -1,6 +1,8 @@
 <script>
 	import { goto } from "$app/navigation";
     
+	import { agentStore } from "$lib/stores/marketing/agentStore";
+
 	import { agentLogin } from "$lib/js/marketing/api/auth";
 	import { validateMobileNumber, validatePassword } from "$lib/js/marketing/utils";
 
@@ -9,6 +11,7 @@
 	import PasswordInput from "$lib/Components/marketing/PasswordInput.svelte";
 	import FullLoading from "$lib/Components/common/FullLoading.svelte";
 	import AlertModal from "$lib/Components/common/AlertModal.svelte";
+	import SubmitButton from "$lib/Components/common/SubmitButton.svelte";
 
 
     let t_login = "Login"
@@ -37,8 +40,8 @@
 	})
 
     const formValid = $derived(
-		validations.mobile &&
-		validations.password 
+		(form.agentMobile && validations.mobile) &&
+		(form.agentPassword && validations.password )
 	);
 
     const toggleSeekPassword = () => {
@@ -63,6 +66,13 @@
         }
     }
 
+    $effect(()=>{
+        console.log($agentStore.signedIn)
+        if($agentStore.signedIn){
+            goto('/marketing/agent-dashboard',{replaceState:true})
+        }
+    })
+
 </script>
 
 
@@ -84,12 +94,11 @@
 
             <PasswordInput bind:password={form.agentPassword} showPassword={showPassword} {toggleSeekPassword}  errPassword={formErrors.password}/>
 
+            <a class="text-sm  block text-violet-500" href="/marketing/auth/forgot-password">{t_forgotpassword}</a>
+
             <div class="space-y-3">
-                <a class="text-xs  block text-violet-500" href="/marketing/auth/forgot-password">{t_forgotpassword}</a>
-                <button type="submit" disabled={!formValid} class="px-4 block w-full py-2 bg-violet-500 disabled:bg-gray-500 disabled:opacity-40 text-white 
-                        rounded hover:bg-blue-600">
-                    {t_login}
-                </button>
+                <SubmitButton btnText={t_login} disabled={!formValid}/>
+
                 <p class="text-sm md:text-base text-center">{t_not_agent}
                     <a href="/marketing/auth/register" class="text-violet-600 hover:text-violet-800">{t_register_here}</a>
                 </p>

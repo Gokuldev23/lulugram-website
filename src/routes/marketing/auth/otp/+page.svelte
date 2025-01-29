@@ -43,6 +43,8 @@
 
     });
 
+    let otpTokenPrev = ''
+
     const handleResendOtp = async () => {
         let {otpToken,agentUid,agentId} = $otpStore
         resendOtpCount++
@@ -58,7 +60,7 @@
     }
     
     const handleOtpSubmit = async () => {
-        let {otpToken,agentUid,otpTokenPrev} = $otpStore
+        let {otpToken,agentUid} = $otpStore
 
         let result = await agentRegisterVerify(otp,otpToken,otpTokenPrev,agentUid)
 
@@ -89,7 +91,7 @@
 
             <InputField type="number" required={true} label="Enter OTP" bind:value={otp} errorMsg={t_otpErr}/>
 
-            <button type="button" disabled={resendOtpCount>1} onclick={handleResendOtp} 
+            <button type="button" disabled={resendOtpCount>=1} onclick={handleResendOtp} 
                 class="text-sm text-violet-500 font-medium disabled:text-gray-500 disabled:opacity-50">
                 {t_resend_otp}
             </button>

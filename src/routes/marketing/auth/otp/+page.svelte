@@ -2,10 +2,14 @@
 
 	import {validateOTP} from '$lib/js/marketing/utils';
 
-	import { userRegisterVerify } from '$lib/js/marketing/api/auth';
+	import { agentRegisterVerify } from '$lib/js/marketing/api/auth';
 
     import Card from '$lib/Components/common/Card.svelte';
     import InputField from '$lib/Components/common/InputField.svelte';
+	import { otpStore } from '$lib/stores/marketing/otpStore';
+	import { goto } from '$app/navigation';
+	import AlertModal from '$lib/Components/common/AlertModal.svelte';
+	import { agentStore } from '$lib/stores/marketing/agentStore';
 
 
     let t_enter_otp = "Enter OTP";
@@ -15,11 +19,14 @@
 
     let t_otpErr = $state(null)
     let disabled = $state(true)
+    let errorSubmit = $state('')
 
     let otp = $state(null);
     let resendOtpCount = 0
 
     let isValidOtp = $derived(validateOTP(otp));
+
+    const closeAlert = () => errorSubmit = ''
 
     $effect(() => {
         t_otpErr = isValidOtp ? null : "OTP is not valid"
@@ -29,6 +36,7 @@
         }else{
             disabled = false
         }   
+
     });
 
     const resendOtp = async () => {
@@ -36,12 +44,25 @@
     }
     
     const handleOtpSubmit = async () => {
+        let {otpToken,agentUid,otpTokenPrev} = $otpStore
 
-        let result = await userRegisterVerify()
+        let result = await agentRegisterVerify(otp,otpToken,otpTokenPrev,agentUid)
+
+        if(result.success){
+            goto('/marketing/agent-dashboard')
+        }else{
+            errorSubmit = result.message
+        }
+
     }
 </script>
 
 <main class="flex justify-center items-center h-svh px-4">
+
+    {#if errorSubmit}
+        <AlertModal message={errorSubmit} msgTextColor={'red'} handleOnOk={closeAlert}/>
+    {/if}
+
     <Card class="max-w-sm mx-auto">
         <h1 class="text-2xl font-bold text-center text-violet-600 mb-5">{t_enter_otp}</h1>
         <p class="text-green-500 text-center my-4 font-semibold">{t_otp_sent}</p>

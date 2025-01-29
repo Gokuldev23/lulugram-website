@@ -6,8 +6,6 @@
 
 <script>
 	import '../app.css';
-	import Footer from '$lib/Components/Footer.svelte';
-
 	
 	let { children } = $props();
 </script>

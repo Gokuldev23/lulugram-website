@@ -3,7 +3,7 @@
 
 	import { otpStore } from "$lib/stores/marketing/otpStore";
 
-	import { userTempRegister } from "$lib/js/marketing/api/auth";
+	import { agentTempRegister } from "$lib/js/marketing/api/auth";
 	import { checkFields, validateMobileNumber, validateName, validatePassword } from "$lib/js/marketing/utils";
 
     import Card from "$lib/Components/common/Card.svelte";
@@ -38,11 +38,14 @@
     let t_mobileErr = $state(null)
     let errorSubmit = $state('')
 
+
+    //////// $derived rune will reasign the variables when the inside state changes//////////////////////
     let isValidName = $derived(validateName(agentName))
     let isValidPassword = $derived(validatePassword(agentPassword))
     let isValidMobileNo = $derived(validateMobileNumber(agentMobile))
 
     
+    ////////////////// this $effect block will run when the inside variables state changes ///////////////////////
     $effect(()=>{
         t_nameErr = isValidName ? null : "Name should atleast 3 character"
         t_passwordErr = isValidPassword ? null : "Password should contain atleast 1 Uppercase, 1 lowercase , 1 Number and 1 symbol"
@@ -52,7 +55,7 @@
             district,
             city,
             state,
-            pincode
+            pin:pincode
         }
 
         let isFormFilled = checkFields(agentName,agentMobile,agentPassword,address)
@@ -69,7 +72,7 @@
 
     const handleRegisterAgent = async () => {
 
-        let result = await userTempRegister(agentName,agentPassword,agentMobile,address,tcAgreed)
+        let result = await agentTempRegister(agentName,agentPassword,agentMobile,countryCode,address,tcAgreed)
 
         if(result.success){
             goto('/marketing/auth/otp')

@@ -8,19 +8,36 @@ export const validateEmail = (email) => {
 
 
 export const validateName = (name) => {
-    if(!name.trim()){
+    if(!name){
         return true
     }
     return name.trim().length>3
 }
 
 
-export const validatePassword = (password) => {
-    if(!password.trim()){
+export function validatePassword(password) {
+    if(password == ''){
         return true
     }
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    return regex.test(password);
+    // Minimum 8 characters
+    const hasMinLength = password.length >= 8;
+    
+    // At least one uppercase letter
+    const hasUpperCase = /[A-Z]/.test(password);
+    
+    // At least one lowercase letter
+    const hasLowerCase = /[a-z]/.test(password);
+    
+    // At least one number
+    const hasNumber = /\d/.test(password);
+    
+    // At least one special character (symbol)
+    const hasSpecialChar = /[!@#$%^&*()_+\-=\\[\]{};':"\\|,.<>\\/?]/.test(password);
+    
+    // Check all conditions
+    const isValid = hasMinLength && hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar;
+    
+    return isValid
 }
 
 

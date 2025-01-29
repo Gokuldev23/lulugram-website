@@ -1,15 +1,16 @@
 <script>
 
-	import {validateOTP} from '$lib/js/marketing/utils';
+	import { goto } from '$app/navigation';
+    
+	import { otpStore } from '$lib/stores/marketing/otpStore';
+	import { agentStore } from '$lib/stores/marketing/agentStore';
 
-	import { agentRegisterVerify } from '$lib/js/marketing/api/auth';
+	import {validateOTP} from '$lib/js/marketing/utils';
+	import { agentRegisterVerify, resendOtp } from '$lib/js/marketing/api/auth';
 
     import Card from '$lib/Components/common/Card.svelte';
-    import InputField from '$lib/Components/common/InputField.svelte';
-	import { otpStore } from '$lib/stores/marketing/otpStore';
-	import { goto } from '$app/navigation';
 	import AlertModal from '$lib/Components/common/AlertModal.svelte';
-	import { agentStore } from '$lib/stores/marketing/agentStore';
+    import InputField from '$lib/Components/common/InputField.svelte';
 
 
     let t_enter_otp = "Enter OTP";
@@ -22,12 +23,15 @@
     let errorSubmit = $state('')
 
     let otp = $state(null);
-    let resendOtpCount = 0
+    let resendOtpCount = $state(0)
+    let isOtpSentAgain = $state(false)
 
     let isValidOtp = $derived(validateOTP(otp));
 
     const closeAlert = () => errorSubmit = ''
 
+    const closeOtpSentMsg = () => isOtpSentAgain = false
+ 
     $effect(() => {
         t_otpErr = isValidOtp ? null : "OTP is not valid"
 
@@ -39,8 +43,18 @@
 
     });
 
-    const resendOtp = async () => {
-        
+    const handleResendOtp = async () => {
+        let {otpToken,agentUid,agentId} = $otpStore
+        resendOtpCount++
+
+        let result = await resendOtp(agentId,agentUid,resendOtpCount)
+        isOtpSentAgain = true
+
+        if(result.success){
+            otpTokenPrev = otpToken
+            $otpStore.otpToken = result.otpToken
+
+        }
     }
     
     const handleOtpSubmit = async () => {
@@ -63,6 +77,10 @@
         <AlertModal message={errorSubmit} msgTextColor={'red'} handleOnOk={closeAlert}/>
     {/if}
 
+    {#if isOtpSentAgain}
+        <AlertModal message={"Otp has been resent your Mobile"} msgTextColor={'green'} handleOnOk={closeOtpSentMsg}/>
+    {/if}
+
     <Card class="max-w-sm mx-auto">
         <h1 class="text-2xl font-bold text-center text-violet-600 mb-5">{t_enter_otp}</h1>
         <p class="text-green-500 text-center my-4 font-semibold">{t_otp_sent}</p>
@@ -71,7 +89,10 @@
 
             <InputField type="number" required={true} label="Enter OTP" bind:value={otp} errorMsg={t_otpErr}/>
 
-            <button type="button" class="text-sm text-violet-500 font-medium">{t_resend_otp}</button>
+            <button type="button" disabled={resendOtpCount>1} onclick={handleResendOtp} 
+                class="text-sm text-violet-500 font-medium disabled:text-gray-500 disabled:opacity-50">
+                {t_resend_otp}
+            </button>
             
             <button
                 class="bg-violet-600 hover:bg-blue-700 disabled:bg-gray-500 disabled:opacity-35 w-full text-white font-bold py-2 px-4 rounded mt-4"

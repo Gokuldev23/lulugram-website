@@ -1,78 +1,79 @@
 <script>
+	import Icon from "@iconify/svelte";
 	import { goto } from "$app/navigation";
 
 	import { otpStore } from "$lib/stores/marketing/otpStore";
 
 	import { agentTempRegister } from "$lib/js/marketing/api/auth";
-	import { checkFields, validateMobileNumber, validateName, validatePassword } from "$lib/js/marketing/utils";
+	import { checkFields, validateAddress, validateMobileNumber, validateName, validatePassword } from "$lib/js/marketing/utils";
 
     import Card from "$lib/Components/common/Card.svelte";
 	import InputField from "$lib/Components/common/InputField.svelte";
 	import AddressForm from "$lib/Components/marketing/AddressForm.svelte";
 	import AlertModal from "$lib/Components/common/AlertModal.svelte";
-
+	import FullLoading from "$lib/Components/common/FullLoading.svelte";
+	import PasswordInput from "$lib/Components/marketing/PasswordInput.svelte";
+	import AgentIdInput from "$lib/Components/marketing/AgentIdInput.svelte";
+	import TermsCheckbox from "$lib/Components/marketing/TermsCheckbox.svelte";
 
 
     let t_register = "Register"
     let t_already_agent = "Already an Agent?"
     let t_login_here = "Login here!"
-    let t_agree_to = "I agree to the"
     let t_tnc = "Terms and conditions"
 
-    let address = {}
-
-    let agentName = $state("")
-    let agentMobile = $state("")
-    let agentPassword = $state("")
-    let countryCode = $state("+91")
-    let tcAgreed = $state(false)
-    let disabled = $state(true)
-
-    let district = $state('')
-    let city = $state('')
-    let state = $state('')
-    let pincode = $state(null)
-
-    let t_nameErr = $state(null)
-    let t_passwordErr = $state(null)
-    let t_mobileErr = $state(null)
+    let disabled = $state(false)
+    let loading = $state(false)
+    let showPassword = $state(false)
     let errorSubmit = $state('')
 
+    let form = $state({
+		agentName: "",
+		agentMobile: null,
+		agentPassword: "",
+		countryCode: "+91",
+		tcAgreed: false,
+		address: {
+			district: '',
+			city: '',
+			state: '',
+			pinCode: null
+		}
+	});
 
-    //////// $derived rune will reasign the variables when the inside state changes//////////////////////
-    let isValidName = $derived(validateName(agentName))
-    let isValidPassword = $derived(validatePassword(agentPassword))
-    let isValidMobileNo = $derived(validateMobileNumber(agentMobile))
+    const validations = $derived({
+		name: validateName(form.agentName),
+		password: validatePassword(form.agentPassword),
+		mobile: validateMobileNumber(form.agentMobile),
+		address: validateAddress(form.address),
+		terms: form.tcAgreed
+	});
 
-    
-    ////////////////// this $effect block will run when the inside variables state changes ///////////////////////
-    $effect(()=>{
-        t_nameErr = isValidName ? null : "Name should atleast 3 character"
-        t_passwordErr = isValidPassword ? null : "Password should contain atleast 1 Uppercase, 1 lowercase , 1 Number and 1 symbol"
-        t_mobileErr = isValidMobileNo ? null : "Mobile is not valid"
+    const formErrors = $derived({
+		name: validations.name ? null : "Name should be at least 3 characters",
+		password: validations.password ? null : "Password Should contains 1 Uppercase, 1 Lowercase , 1 Number and 1 Symbol",
+		mobile: validations.mobile ? null : "Invalid mobile number"
+	});
 
-        address = {
-            district,
-            city,
-            state,
-            pin:pincode
-        }
+    const formValid = $derived(
+		validations.name &&
+		validations.password &&
+		validations.mobile &&
+		validations.address &&
+		validations.terms
+	);
 
-        let isFormFilled = checkFields(agentName,agentMobile,agentPassword,address)
-
-        if( !isValidMobileNo || !isValidPassword || !isValidName || !isFormFilled || !tcAgreed){
-            disabled = true
-        }else{
-            disabled = false
-        }
-
-    })
- 
     const closeAlert = () => errorSubmit = ""
+
+    const toggleSeekPassword = () => showPassword = !showPassword
 
     const handleRegisterAgent = async () => {
 
+        let { agentName , agentMobile , agentPassword ,countryCode ,address ,tcAgreed } = form
+
+        loading = true
         let result = await agentTempRegister(agentName,agentPassword,agentMobile,countryCode,address,tcAgreed)
+        loading = false
 
         if(result.success){
             goto('/marketing/auth/otp')
@@ -89,53 +90,46 @@
         }
     }
 
-
 </script>
 
 
-<main class="py-20 flex items-center px-4">
+<main class="py-20  overflow-y-auto flex items-center px-4">
+
+    {#if loading}
+        <FullLoading/>
+    {/if}
 
     {#if errorSubmit}
         <AlertModal message={errorSubmit} handleOnOk={closeAlert}/>
     {/if}
 
     <Card class="max-w-lg mx-auto w-full">
+
         <form onsubmit={handleRegisterAgent}  class=" space-y-6">
+
             <h1 class="text-center md:text-3xl text-xl uppercase text-slate-700 font-bold mb-6">{t_register}</h1>
 
-            <InputField label={"Name"} required={true} bind:value={agentName} errorMsg={t_nameErr}/>
+            <InputField label={"Name"} required={true} bind:value={form.agentName} errorMsg={formErrors.name}/>
 
-            <div id="mobile-input" class="flex gap-1">
-                <select bind:value={countryCode} class="rounded-l-lg" name="" id="">
-                    <option value="+91">+91</option>
-                </select>
-                <InputField required={true} label={"Mobile No"}    type={"number"} bind:value={agentMobile}/>
-            </div>
+            <AgentIdInput bind:mobile={form.agentMobile} bind:countryCode={form.countryCode} mobileErr={formErrors.mobile}/>
 
-            <div id="password-input">
-                <InputField label={"Password"} required={true} type={"password"} bind:value={agentPassword} errorMsg={t_passwordErr}/>
-            </div>
+            <PasswordInput bind:password={form.agentPassword} showPassword={showPassword} toggleSeekPassword={toggleSeekPassword} errPassword={formErrors.password}/>
 
-            <AddressForm bind:district={district} bind:city={city} bind:state={state} bind:pincode={pincode}/>
+            <AddressForm bind:district={form.address.district} bind:city={form.address.city} bind:state={form.address.state} bind:pincode={form.address.pinCode}/>
 
-            <div class="">
+            <TermsCheckbox bind:checked={form.tcAgreed} t_condition={t_tnc} link={'/marketing/tnc'}/>
 
-                <div id="checkbox-input" class="my-4">
-                    <input bind:checked={tcAgreed} type="checkbox" name="tc" id="tc">
-                    <label for="tc"> {t_agree_to} <a class="text-violet-500 font-medium" href="/marketing/tnc">{t_tnc}</a> </label>
-                </div>
+            <button 
+                type="submit"
+                disabled={!formValid}
+                class="px-4 block w-full py-2 bg-violet-500 disabled:bg-gray-500 disabled:opacity-35 text-white rounded hover:bg-blue-600">
+                {t_register}
+            </button>
 
-                <button 
-                    type="submit"
-                    disabled={disabled}
-                    class="px-4 block w-full py-2 bg-violet-500 disabled:bg-gray-500 disabled:opacity-35 text-white rounded hover:bg-blue-600">
-                    {t_register}
-                </button>
+            <p class="mt-4 text-center text-sm md:text-base"> {t_already_agent}
+                <a href="/marketing/auth/login" class="text-violet-600 hover:text-violet-800">{t_login_here}</a>
+            </p>
 
-                <p class="mt-4 text-center text-sm md:text-base"> {t_already_agent}
-                    <a href="/marketing/auth/login" class="text-violet-600 hover:text-violet-800">{t_login_here}</a>
-                </p>
-            </div>
         </form>
     </Card>
 </main>

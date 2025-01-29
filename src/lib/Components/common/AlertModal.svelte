@@ -15,7 +15,7 @@
 </script>
 
 
-<Modal on:click>
+<Modal>
     <div class="alert" style="background-color: {alertBgColor};">
         <div class="title">
             <Icon icon="ant-design:alert-twotone" width="24"/>

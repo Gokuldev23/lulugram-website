@@ -97,14 +97,13 @@ export const agentRegisterVerify = async (otp,otpToken,otpTokenPrev,agentUid) =>
     }   
 }
 
-export const agentLogin = async (agentId, password, countryCode, countryName) => {
-    let url = `${dataUrlRoot}/agent/auth/login`
+export const agentLogin = async (agentId, password, countryCode) => {
+    let url = `${dataUrlRoot}/agents/auth/login`
 
     let data = {
         agentId,
         password,
-        countryCode,
-        countryName
+        countryCode
     }
 
     try {
@@ -119,7 +118,11 @@ export const agentLogin = async (agentId, password, countryCode, countryName) =>
             body:JSON.stringify(data)
         })
         let result = await response.json()
-        // return result
+
+        if(result.success){
+            let agentData = result.data
+            agentStore.set({...agentData})
+        }
    
         return result
     } catch (error) {

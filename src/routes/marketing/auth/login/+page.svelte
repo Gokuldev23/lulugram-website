@@ -1,7 +1,14 @@
 <script>
-    import Card from "$lib/Components/common/Card.svelte";
-	import InputField from "$lib/Components/common/InputField.svelte";
+	import { goto } from "$app/navigation";
+    
+	import { agentLogin } from "$lib/js/marketing/api/auth";
 	import { validateMobileNumber, validatePassword } from "$lib/js/marketing/utils";
+
+    import Card from "$lib/Components/common/Card.svelte";
+	import AgentIdInput from "$lib/Components/marketing/AgentIdInput.svelte";
+	import PasswordInput from "$lib/Components/marketing/PasswordInput.svelte";
+	import FullLoading from "$lib/Components/common/FullLoading.svelte";
+	import AlertModal from "$lib/Components/common/AlertModal.svelte";
 
 
     let t_login = "Login"
@@ -9,54 +16,81 @@
     let t_not_agent = "Not an Agent?"
     let t_forgotpassword = "Forgot password?"
 
+    let showPassword = $state(false)
+    let loading = $state(false)
+    let errorSubmit = $state('')
 
-    let t_mobileErr = $state(null)
-    let t_passwordErr = $state(null)
+    let form = $state({
+		agentMobile: null,
+		agentPassword: "",
+        countryCode:"+91"
+	});
 
-    let agentMobile = $state(null)
-    let agentPassword = $state("")
-    let disabled = $state(true)
+    const validations = $derived({
+		mobile: validateMobileNumber(form.agentMobile),
+		password: validatePassword(form.agentPassword)
+	});
 
-    let isValidMobile = $derived(validateMobileNumber(agentMobile))
-    let isValidPassword = $derived(validatePassword(agentPassword))
+    const formErrors = $derived({
+		mobile: validations.mobile ? null : "Invalid mobile number",
+		password: validations.password ? null : "Password is not valid"
+	})
 
-    $effect(()=>{
-        t_mobileErr = isValidMobile ? null : "Mobile is not valid"
-        t_passwordErr = isValidPassword ? null : "Password is not valid"
+    const formValid = $derived(
+		validations.mobile &&
+		validations.password 
+	);
 
-        if( !isValidMobile || !isValidPassword || agentMobile == null || !agentPassword ){
-            disabled = true
-        }else{
-            disabled = false
-        }
-    })
+    const toggleSeekPassword = () => {
+        showPassword = !showPassword
+    }
+
+    const closeAlert = () => errorSubmit = ''
 
     const handleLoginAgent = async (e) => {
         e.preventDefault();
         
-        console.log("login")
+        let {agentMobile , agentPassword ,countryCode } = form
+
+        loading = true
+        let result = await agentLogin(agentMobile,agentPassword,countryCode)
+        loading = false
+        
+        if(result.success){
+            goto('/marketing/agent-dashboard',{replaceState:true})
+        }else{
+            errorSubmit = result.message
+        }
     }
 
 </script>
 
 
 <main class="py-20 flex items-center px-4">
+
+    {#if loading}
+        <FullLoading/>
+    {/if}
+
+    {#if errorSubmit}
+        <AlertModal message={errorSubmit} msgTextColor={'red'} handleOnOk={closeAlert}/>
+    {/if}
+
     <Card class=" max-w-lg mx-auto w-full">
         <form onsubmit={handleLoginAgent}  class="space-y-6">
             <h1 class="text-center md:text-3xl text-2xl  uppercase text-slate-700 font-bold mb-6">{t_login}</h1>
 
-            <InputField label={"Mobile No"} required={true} type={"number"} bind:value={agentMobile} errorMsg={t_mobileErr}/>
+            <AgentIdInput bind:mobile={form.agentMobile} bind:countryCode={form.countryCode} mobileErr={formErrors.mobile} />
 
-            <InputField label={"Password"} required={true} type={"password"} bind:value={agentPassword} errorMsg={t_passwordErr}/>
+            <PasswordInput bind:password={form.agentPassword} showPassword={showPassword} {toggleSeekPassword}  errPassword={formErrors.password}/>
 
-            <a class="text-xs  block text-violet-500" href="/marketing/auth/forgot-password">{t_forgotpassword}</a>
-
-            <div class="">
-                <button type="submit" disabled={disabled} class="px-4 block w-full py-2 bg-violet-500 disabled:bg-gray-500 disabled:opacity-40 text-white 
+            <div class="space-y-3">
+                <a class="text-xs  block text-violet-500" href="/marketing/auth/forgot-password">{t_forgotpassword}</a>
+                <button type="submit" disabled={!formValid} class="px-4 block w-full py-2 bg-violet-500 disabled:bg-gray-500 disabled:opacity-40 text-white 
                         rounded hover:bg-blue-600">
                     {t_login}
                 </button>
-                <p class="mt-4 text-sm md:text-base text-center">{t_not_agent}
+                <p class="text-sm md:text-base text-center">{t_not_agent}
                     <a href="/marketing/auth/register" class="text-violet-600 hover:text-violet-800">{t_register_here}</a>
                 </p>
             </div>

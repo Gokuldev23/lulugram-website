@@ -8,6 +8,8 @@
     let ifscCode = "";
     let bankName = "";
     let branchName = "";
+    let isBankAdded = false;
+    let bankStatus = "";
 
     $: a_token = $agentStore.a_token;
 
@@ -32,6 +34,14 @@
                 branch_name: data.branch_name
             };
 
+            bankStatus = data.status;
+
+            if(bankStatus === "active"){
+                isBankAdded = true;
+            } else {
+                isBankAdded = false;
+            }
+
             // Extract fields into separate variables
             accountHolderName = bankDetails.account_holder_name;
             accountNumber = bankDetails.account_number;
@@ -47,7 +57,7 @@
 </script>
 
 <main class="w-full max-w-[400px] md:max-w-[500px] lg:max-w-[600px] bg-gray-100 flex flex-col items-center">
-    {#if accountHolderName}
+    {#if bankStatus === "active"}
         <div class="w-full bg-white p-4 md:p-6 rounded-lg shadow-lg">
             <h2 class="text-xl md:text-2xl lg:text-3xl font-bold text-gray-800 mb-4 text-center">{t_bank_details}</h2>
             <div class="bg-green-50 p-4 md:p-6 rounded-lg border border-green-300 text-green-700 text-sm md:text-base">

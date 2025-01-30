@@ -5,7 +5,6 @@
     import DisplayBankDetail from "../DisplayBankDetail.svelte";
 
     $: a_token = $agentStore.a_token;   
-    $: bankVerified = $agentStore.bankVerified;
 
     let accountNumber = "";
     let reEnterAccountNumber = "";
@@ -173,14 +172,10 @@
     const submitForm = async() => {
 
         let result = await bankVerify(a_token, accountHolderName, accountNumber, ifscCode, branchName, bankName);
+        // console.log(result);
 
         if(result.success){
-            bankVerified = true;
-            
-            agentStore.set({
-                a_token: a_token,
-                bankVerified: true
-            });
+            isBankAdded = true;
         } else {
             console.log("Error adding bank details");
         }

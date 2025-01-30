@@ -26,19 +26,6 @@
     $: a_token = $agentStore.a_token
     $: isEmailVerified = $agentStore.emailVerified
     $: email = $agentStore.email
-    $: console.log(email, a_token, isEmailVerified)
-    $: console.log($agentStore.agentId)
-
-    const agentStatus = async() => {
-        let result = await getAgentStatus(a_token);
-        console.log("result",result);
-        // if(result.success){
-        //     console.log("result",result.data);
-        // } else {
-        //     console.log("Error fetching agent status");
-        // }
-    }
-    $: agentStatus(a_token);
 
     const sendEmailToGetOtp = async() => {
         let result = await emailVerify(a_token, email);
@@ -60,15 +47,13 @@
         let result = await otpVerifyEmail(a_token, email, otp, otpToken);
 
         if(result.success){
-            isEmailVerified = true;
-            errorMessage = ""
-
-            agentStore.set({
-                agentEmail: email,
+            agentStore.update(state => ({
+                ...state,
+                email: email,
                 a_token: a_token,
-                isEmailVerified: true
-            });
-
+                emailVerified: true
+            }));
+            errorMessage = ""
         } else {
             errorMessage = result.message;
         }
@@ -87,7 +72,7 @@
 </script>
 
 <main class="p-4 md:p-8 bg-gray-100 flex flex-col items-center">
-    {#if !isEmailVerified}
+    {#if !$agentStore.emailVerified}
         <div class="w-full bg-white p-4 md:p-6 rounded-lg shadow-lg max-w-[400px] md:max-w-[500px] lg:max-w-[600px]">
             <h2 class="text-xl md:text-2xl text-center mb-4 md:mb-6 text-gray-800 font-bold border-b border-gray-300 pb-2">
                 {t_email_verification}
@@ -98,7 +83,7 @@
                 <div class="flex justify-center items-center">
                     <input type="email" bind:value={email} placeholder={t_enter_email}
                         on:input={(e) => validateEmail(e.target.value)}
-                        class="w-full p-1.5 md:p-2 border border-gray-300 rounded max-w-[300px] md:max-w-[400px] text-sm md:text-base" 
+                        class="w-full p-1.5 md:p-2 border border-gray-300 rounded max-w-[300px] md:max-w-[400px] text-sm md:text-base"
                     />
                 </div>
                 <div class="flex justify-center items-center">
@@ -147,5 +132,4 @@
             </div>
         </div>
     {/if}
-    
 </main>

@@ -20,14 +20,4 @@ export let agentStore = writable({
     profilePic: "",
     profileImageSizes: "",
     expiresIn: ""
-    signedIn:false,
-    a_token:'',
-    agentId:'',
-    agentUid:'',
-    agentName:'',
-    email:'',
-    agentPhone:'',
-    agentNumber:'',
-    isEmailVerified:false,
-    isBankVerified:false,
 })

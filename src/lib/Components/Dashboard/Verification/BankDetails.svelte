@@ -1,4 +1,12 @@
 <script>
+    import { agentStore } from "$lib/stores/marketing/agentStore";
+    import { bankVerify, getBankDetails } from "$lib/Components/JS/bankVerification";
+
+    import DisplayBankDetail from "../DisplayBankDetail.svelte";
+
+    $: a_token = $agentStore.a_token;   
+    $: bankVerified = $agentStore.bankVerified;
+
     let accountNumber = "";
     let reEnterAccountNumber = "";
     let accountHolderName = "";
@@ -15,6 +23,25 @@
     let branchDetailsFetched = false;
     let isBankAdded = false
     let showBankDetailsAddedMessage = false;
+
+    const getDetailsOfBank = async(a_token) => {
+        let result = await getBankDetails(a_token);
+
+        if(result.success){
+            let data = result.data;
+            status = data.status;
+
+            if(status === "active"){
+                isBankAdded = true;
+            } else {
+                isBankAdded = false;
+            }
+        } else {
+            console.log("Error fetching bank details");
+        }
+    }
+
+    $: getDetailsOfBank(a_token);
 
     // Track if fields have been touched
     let accountNumberTouched = false;
@@ -143,26 +170,19 @@
     }
 
     // Submit Form
-    function submitForm() {
-        setTimeout(() => {
-            isBankAdded = true
-            showBankDetailsAddedMessage = true;
-            console.log("Bank added successfully!");
+    const submitForm = async() => {
 
-            // Hide the OTP sent message after 5 seconds
-            setTimeout(() => {
-                showBankDetailsAddedMessage = false;
-            }, 5000);
-        }, 2000); // Simulate a 2-second delay for verification
+        let result = await bankVerify(a_token, accountHolderName, accountNumber, ifscCode, branchName, bankName);
 
-        if (isFormValid()) {
-            console.log("Account Number:", accountNumber);
-            console.log("Account Holder Name:", accountHolderName);
-            console.log("IFSC Code:", ifscCode);
-            console.log("Branch Name:", branchName);
-            console.log("Bank Name:", bankName);
+        if(result.success){
+            bankVerified = true;
+            
+            agentStore.set({
+                a_token: a_token,
+                bankVerified: true
+            });
         } else {
-            alert("Please fix the errors before submitting.");
+            console.log("Error adding bank details");
         }
     }
 
@@ -185,11 +205,8 @@
         <!-- Account Holder Name -->
         <div class="mb-3 md:mb-4">
             <label class="block text-sm md:text-base font-medium text-gray-700 mb-1">{t_account_holder_name}</label>
-            <input
-                type="text"
-                class="w-full p-1.5 md:p-2 border border-gray-300 rounded text-sm md:text-base"
-                bind:value={accountHolderName}
-                placeholder="Enter account holder name"
+            <input type="text" class="w-full p-1.5 md:p-2 border border-gray-300 rounded text-sm md:text-base"
+                bind:value={accountHolderName} placeholder="Enter account holder name"
                 on:input={() => { accountHolderNameTouched = true; validateAccountHolderName(); }}
                 on:blur={() => { accountHolderNameTouched = true; validateAccountHolderName(); }}
             />
@@ -201,11 +218,8 @@
         <!-- Account Number -->
         <div class="mb-3 md:mb-4">
             <label class="block text-sm md:text-base font-medium text-gray-700 mb-1">{t_account_number}</label>
-            <input
-                type="text"
-                class="w-full p-1.5 md:p-2 border border-gray-300 rounded text-sm md:text-base"
-                bind:value={accountNumber}
-                placeholder="Enter your account number"
+            <input type="text" class="w-full p-1.5 md:p-2 border border-gray-300 rounded text-sm md:text-base"
+                bind:value={accountNumber} placeholder="Enter your account number"
                 on:input={() => { accountNumberTouched = true; validateAccountNumber(); validateReEnterAccountNumber(); }}
                 on:blur={() => { accountNumberTouched = true; validateAccountNumber(); }}
             />
@@ -217,11 +231,8 @@
         <!-- Re-Enter Account Number -->
         <div class="mb-3 md:mb-4">
             <label class="block text-sm md:text-base font-medium text-gray-700 mb-1">{t_re_enter_account_number}</label>
-            <input
-                type="text"
-                class="w-full p-1.5 md:p-2 border border-gray-300 rounded text-sm md:text-base"
-                bind:value={reEnterAccountNumber}
-                placeholder="Re-enter your account number"
+            <input type="text" class="w-full p-1.5 md:p-2 border border-gray-300 rounded text-sm md:text-base"
+                bind:value={reEnterAccountNumber} placeholder="Re-enter your account number"
                 on:input={() => { reEnterAccountNumberTouched = true; validateReEnterAccountNumber(); }}
                 on:blur={() => { reEnterAccountNumberTouched = true; validateReEnterAccountNumber(); }}
             />
@@ -233,11 +244,8 @@
         <!-- IFSC Code -->
         <div class="mb-3 md:mb-4">
             <label class="block text-sm md:text-base font-medium text-gray-700 mb-1">{t_ifsc_code}</label>
-            <input
-                type="text"
-                class="w-full p-1.5 md:p-2 border border-gray-300 rounded text-sm md:text-base"
-                bind:value={ifscCode}
-                placeholder="Enter IFSC code"
+            <input type="text" class="w-full p-1.5 md:p-2 border border-gray-300 rounded text-sm md:text-base"
+                bind:value={ifscCode} placeholder="Enter IFSC code"
                 on:input={() => { ifscCodeTouched = true; validateIFSCCode(); resetBranchAndBankName(); }}
                 on:blur={() => { ifscCodeTouched = true; validateIFSCCode(); }}
             />
@@ -245,8 +253,7 @@
                 <p class="text-red-500 text-xs md:text-sm mt-1">{ifscCodeError}</p>
             {/if}
             {#if ifscCode && !ifscCodeError}
-                <button
-                    on:click={fetchBranchDetails}
+                <button on:click={fetchBranchDetails}
                     class="mt-2 bg-green-500 text-white px-4 py-1.5 rounded text-sm md:text-base hover:bg-green-700"
                     disabled={isFetchingIFSC}
                 >
@@ -259,12 +266,8 @@
         {#if branchDetailsFetched}
             <div class="mb-3 md:mb-4">
                 <label class="block text-sm md:text-base font-medium text-gray-700 mb-1">{t_branch_name}</label>
-                <input
-                    type="text"
-                    class="w-full p-1.5 md:p-2 border border-gray-300 rounded text-sm md:text-base"
-                    bind:value={branchName}
-                    placeholder="Enter branch name"
-                    readonly
+                <input type="text" class="w-full p-1.5 md:p-2 border border-gray-300 rounded text-sm md:text-base"
+                    bind:value={branchName} placeholder="Enter branch name" readonly
                 />
             </div>
         {/if}
@@ -273,12 +276,8 @@
         {#if branchDetailsFetched}
             <div class="mb-3 md:mb-4">
                 <label class="block text-sm md:text-base font-medium text-gray-700 mb-1">{t_bank_name}</label>
-                <input
-                    type="text"
-                    class="w-full p-1.5 md:p-2 border border-gray-300 rounded text-sm md:text-base"
-                    bind:value={bankName}
-                    placeholder="Enter bank name"
-                    readonly
+                <input type="text" class="w-full p-1.5 md:p-2 border border-gray-300 rounded text-sm md:text-base"
+                    bind:value={bankName} placeholder="Enter bank name" readonly
                 />
             </div>
         {/if}
@@ -294,11 +293,7 @@
             </button>
         </div>
     </div>
-    {:else if showBankDetailsAddedMessage}
-        <div class="w-full bg-white p-4 md:p-6 rounded-lg shadow-lg max-w-[400px] md:max-w-[500px] lg:max-w-[600px]">
-            <div class="bg-green-50 p-2 md:p-3 rounded-lg text-green-700 text-sm md:text-base">
-                {t_bankAdded}
-            </div>
-        </div>
+    {:else}
+        <DisplayBankDetail/>
     {/if}
 </main>

@@ -19,7 +19,6 @@
     let t_not_agent = "Not an Agent?"
     let t_forgotpassword = "Forgot password?"
 
-    let showPassword = $state(false)
     let loading = $state(false)
     let errorSubmit = $state('')
 
@@ -44,9 +43,6 @@
 		(form.agentPassword && validations.password )
 	);
 
-    const toggleSeekPassword = () => {
-        showPassword = !showPassword
-    }
 
     const closeAlert = () => errorSubmit = ''
 
@@ -91,7 +87,7 @@
 
             <AgentIdInput bind:mobile={form.agentMobile} bind:countryCode={form.countryCode} mobileErr={formErrors.mobile} />
 
-            <PasswordInput bind:password={form.agentPassword} showPassword={showPassword} {toggleSeekPassword}  errPassword={formErrors.password}/>
+            <PasswordInput bind:password={form.agentPassword}  errPassword={formErrors.password}/>
 
             <a class="text-sm  block text-violet-500" href="/marketing/auth/forgot-password">{t_forgotpassword}</a>
 

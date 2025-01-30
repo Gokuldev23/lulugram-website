@@ -26,7 +26,6 @@
 
     let disabled = $state(false)
     let loading = $state(false)
-    let showPassword = $state(false)
     let errorSubmit = $state('')
 
     let form = $state({
@@ -66,8 +65,6 @@
 	);
 
     const closeAlert = () => errorSubmit = ""
-
-    const toggleSeekPassword = () => showPassword = !showPassword
 
     const handleRegisterAgent = async () => {
 
@@ -121,7 +118,7 @@
 
             <AgentIdInput bind:mobile={form.agentMobile} bind:countryCode={form.countryCode} mobileErr={formErrors.mobile}/>
 
-            <PasswordInput bind:password={form.agentPassword} {showPassword} toggleSeekPassword={toggleSeekPassword} errPassword={formErrors.password}/>
+            <PasswordInput bind:password={form.agentPassword} errPassword={formErrors.password}/>
 
             <AddressForm bind:district={form.address.district} bind:city={form.address.city} bind:state={form.address.state} bind:pincode={form.address.pinCode}/>
 

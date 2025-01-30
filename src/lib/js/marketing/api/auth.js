@@ -152,6 +152,34 @@ export const agentLogin = async (agentId, password, countryCode) => {
 	}
 };
 
+export const changePassword = async (currentPassword,newPassword,a_token) => {
+
+    let url = `${dataUrlRoot}/agents/auth/change-password`
+
+    let data = {
+        currentPassword,
+        newPassword,
+        confirmNewPassword:newPassword
+    }
+
+    try {
+        const res = await fetch(url, {
+            method:'POST',
+            headers: {
+                'Authorization': `Bearer ${a_token}`,
+                'Content-Type': 'application/json', // Set the content type
+            },
+            body:JSON.stringify(data)
+        });
+
+        const response = await res.json();
+        return response;
+    } catch (error) {
+        console.error(`Error fetching crossword: ${error.message}`);
+        return {success:false,message:'error fetching'}; 
+    }
+}
+
 export const forgotpassword = async (agentId, countryCode) => {
 	let url = `${dataUrlRoot}/agents/auth/forgot-password`;
 
@@ -188,32 +216,6 @@ export const forgotpassword = async (agentId, countryCode) => {
 	}
 };
 
-export const changePassword = async (currentPassword, newPassword, a_token) => {
-	let url = `${dataUrlRoot}/agents/auth/change-password`;
-
-	let data = {
-		currentPassword,
-		newPassword,
-		confirmNewPassword: newPassword
-	};
-
-	try {
-		const res = await fetch(url, {
-			method: 'POST',
-			headers: {
-				Authorization: `Bearer ${a_token}`,
-				'Content-Type': 'application/json' // Set the content type
-			},
-			body: JSON.stringify(data)
-		});
-
-		const response = await res.json();
-		return response;
-	} catch (error) {
-		console.error(`Error fetching crossword: ${error.message}`);
-		return { success: false, message: 'error fetching' };
-	}
-};
 
 export const changeForgotPassword = async (agentUid, password, otp, otpToken, otpTokenPrev) => {
 	let url = `${dataUrlRoot}/agents/auth/change-forgot-password`;

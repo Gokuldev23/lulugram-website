@@ -9,7 +9,7 @@
     <div class="grid md:grid-cols-4 grid-cols-2 gap-8">
         {#each teamMembers as member}
             <div class="overflow-hidden">
-                <img class="aspect-square object-cover object-top rounded-lg" src={member.image} alt="">
+                <img class="aspect-square w-full  object-cover object-top rounded-lg" src={member.image} alt="">
                 <p class="text-center text-xl font-semibold my-2">{member.name}</p>
                 <p class="text-center text-base text-slate-600">{member.role}</p>
             </div>

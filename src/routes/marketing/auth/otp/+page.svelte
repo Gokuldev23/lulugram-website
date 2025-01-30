@@ -11,6 +11,7 @@
     import Card from '$lib/Components/common/Card.svelte';
 	import AlertModal from '$lib/Components/common/AlertModal.svelte';
     import InputField from '$lib/Components/common/InputField.svelte';
+	import SubmitButton from '$lib/Components/common/SubmitButton.svelte';
 
 
     let t_enter_otp = "Enter OTP";
@@ -43,6 +44,8 @@
 
     });
 
+    let otpTokenPrev = ''
+
     const handleResendOtp = async () => {
         let {otpToken,agentUid,agentId} = $otpStore
         resendOtpCount++
@@ -58,7 +61,7 @@
     }
     
     const handleOtpSubmit = async () => {
-        let {otpToken,agentUid,otpTokenPrev} = $otpStore
+        let {otpToken,agentUid} = $otpStore
 
         let result = await agentRegisterVerify(otp,otpToken,otpTokenPrev,agentUid)
 
@@ -89,18 +92,12 @@
 
             <InputField type="number" required={true} label="Enter OTP" bind:value={otp} errorMsg={t_otpErr}/>
 
-            <button type="button" disabled={resendOtpCount>1} onclick={handleResendOtp} 
+            <button type="button" disabled={resendOtpCount>=1} onclick={handleResendOtp} 
                 class="text-sm text-violet-500 font-medium disabled:text-gray-500 disabled:opacity-50">
                 {t_resend_otp}
             </button>
             
-            <button
-                class="bg-violet-600 hover:bg-blue-700 disabled:bg-gray-500 disabled:opacity-35 w-full text-white font-bold py-2 px-4 rounded mt-4"
-                type="submit"
-                disabled={disabled}
-            >
-                {t_submit}
-            </button>
+            <SubmitButton disabled={disabled}/>
         </form>
 
     </Card>

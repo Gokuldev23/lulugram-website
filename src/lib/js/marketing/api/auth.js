@@ -273,7 +273,7 @@ export const resendOtp = async (agentId, agentUid, count) => {
 };
 
 export const logoutAgent = async () => {
-	let url = `${dataUrlRoot}/agent/auth/logout`;
+	let url = `${dataUrlRoot}/agents/auth/logout`;
 
 	try {
 		const res = await fetch(url, {
@@ -283,9 +283,6 @@ export const logoutAgent = async () => {
 		});
 
 		const response = await res.json();
-		if (response.success) {
-			// clearRefreshTimer()
-		}
 		return response;
 	} catch (error) {
 		console.error(`Error fetching crossword: ${error.message}`);
@@ -294,7 +291,7 @@ export const logoutAgent = async () => {
 };
 
 export const deleteAccountVerify = async (a_token) => {
-	let url = `${dataUrlRoot}/agent/account/send-otp`;
+	let url = `${dataUrlRoot}/agents/account/send-otp`;
 
 	try {
 		const res = await fetch(url, {
@@ -313,7 +310,7 @@ export const deleteAccountVerify = async (a_token) => {
 };
 
 export const confirmDeleteAccount = async (a_token, data) => {
-	let url = `${dataUrlRoot}/agent/account/delete`;
+	let url = `${dataUrlRoot}/agents/account/delete`;
 
 	try {
 		const res = await fetch(url, {
@@ -332,3 +329,5 @@ export const confirmDeleteAccount = async (a_token, data) => {
 		return { success: false, message: 'error fetching' };
 	}
 };
+
+

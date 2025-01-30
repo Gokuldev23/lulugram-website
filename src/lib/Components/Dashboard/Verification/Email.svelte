@@ -4,6 +4,7 @@
     import { emailVerify, otpVerifyEmail } from '$lib/Components/JS/emailVerification';
     import { agentStore } from '$lib/stores/marketing/agentStore';
     import { otpStore } from '$lib/stores/marketing/otpStore';
+    import { getAgentStatus } from '$lib/js/marketing/api/auth';
 
     let t_email_verification = "Email Verification";
     let t_enter_email = "Enter your email";
@@ -18,29 +19,16 @@
     let email = "";
     let otp = "";
     let otpToken = ""
-    let isEmailVerified = false;
     let isOtpSent = false;
     let isEmailValid = false;
-    let showEmailVerifyMessage = false;
     let errorMessage = "";
 
     $: a_token = $agentStore.a_token
+    $: isEmailVerified = $agentStore.emailVerified
+    $: email = $agentStore.email
 
-    function verifyEmail() {
-        setTimeout(() => {
-            isEmailVerified = true;
-            showEmailVerifyMessage = true; 
-            console.log("Email verified successfully!");
-
-            setTimeout(() => {
-                showEmailVerifyMessage = false;
-            }, 5000);
-        }, 2000); 
-    }
-
-    async function sendEmailToGetOtp() {
+    const sendEmailToGetOtp = async() => {
         let result = await emailVerify(a_token, email);
-        console.log("result", result);
 
         if(result.success){
             isOtpSent = true;
@@ -55,12 +43,16 @@
         }
     }
 
-    async function submitOtp() {
+    const submitOtp = async() => {
         let result = await otpVerifyEmail(a_token, email, otp, otpToken);
-        console.log("result", result);
 
         if(result.success){
-            verifyEmail();
+            agentStore.update(state => ({
+                ...state,
+                email: email,
+                a_token: a_token,
+                emailVerified: true
+            }));
             errorMessage = ""
         } else {
             errorMessage = result.message;
@@ -80,7 +72,7 @@
 </script>
 
 <main class="p-4 md:p-8 bg-gray-100 flex flex-col items-center">
-    {#if !isEmailVerified}
+    {#if !$agentStore.emailVerified}
         <div class="w-full bg-white p-4 md:p-6 rounded-lg shadow-lg max-w-[400px] md:max-w-[500px] lg:max-w-[600px]">
             <h2 class="text-xl md:text-2xl text-center mb-4 md:mb-6 text-gray-800 font-bold border-b border-gray-300 pb-2">
                 {t_email_verification}
@@ -91,7 +83,7 @@
                 <div class="flex justify-center items-center">
                     <input type="email" bind:value={email} placeholder={t_enter_email}
                         on:input={(e) => validateEmail(e.target.value)}
-                        class="w-full p-1.5 md:p-2 border border-gray-300 rounded max-w-[300px] md:max-w-[400px] text-sm md:text-base" 
+                        class="w-full p-1.5 md:p-2 border border-gray-300 rounded max-w-[300px] md:max-w-[400px] text-sm md:text-base"
                     />
                 </div>
                 <div class="flex justify-center items-center">
@@ -132,10 +124,11 @@
                 {/if}
             </div>
         </div>
-    {:else if showEmailVerifyMessage}
+    {:else}
         <div class="w-full bg-white p-4 md:p-6 rounded-lg shadow-lg max-w-[400px] md:max-w-[500px] lg:max-w-[600px]">
-            <div class="bg-green-50 p-2 md:p-3 rounded-lg text-green-700 text-sm md:text-base">
-                {t_email_verified}
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4 text-center">Email</h2>
+            <div class="bg-green-50 p-4 md:p-6 rounded-lg border border-green-300 text-green-700 text-sm md:text-base">
+                <p class="text-base md:text-lg text-center">{email}</p>
             </div>
         </div>
     {/if}

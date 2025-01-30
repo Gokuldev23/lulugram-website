@@ -1,4 +1,4 @@
-import dataUrlRoot from "./dataUrlRoot";
+import dataUrlRoot from "$lib/js/dataUrlRoot"
 
 export const emailVerify = async (a_token, email) => {
 

@@ -6,9 +6,9 @@ export let agentStore = writable({
     agentId:'',
     agentUid:'',
     agentName:'',
-    agentEmail:'',
+    email:'',
     agentPhone:'',
     agentNumber:'',
-    emailVerified:false,
+    isEmailVerified:false,
     isBankVerified:false,
 })

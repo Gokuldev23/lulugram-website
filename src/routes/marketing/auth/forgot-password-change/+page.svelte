@@ -9,6 +9,9 @@
 	import Card from "$lib/Components/common/Card.svelte";
 	import AlertModal from "$lib/Components/common/AlertModal.svelte";
 	import InputField from "$lib/Components/common/InputField.svelte";
+	import PasswordInput from "$lib/Components/marketing/PasswordInput.svelte";
+	import FullLoading from "$lib/Components/common/FullLoading.svelte";
+	import SubmitButton from "$lib/Components/common/SubmitButton.svelte";
 
 
 
@@ -24,59 +27,69 @@
     let t_forgot_pass_change = "Forgot password Change"
 
 
-    let otp = $state(null);
-    let newPassword = $state('')
     let loading = $state(false)
     let errorSubmit = $state('')
     let otpTokenPrev = null
-    let count = 0
-    let disabled = $state(false)
+    let resendOtpCount = $state(0)
+    let isOtpSentAgain = $state(false)
+    let showPassword = $state(false)
+
+    let form = $state({
+		otp: null,
+		newPassword: "",
+        countryCode:"+91"
+	});
+
+    const validations = $derived({
+        otp : validateOTP(form.otp),
+		password: validatePassword(form.newPassword)
+	});
+
+    const formErrors = $derived({
+		otp: validations.otp ? null : "Invalid OTP",
+		password: validations.password ? null : "Password Should contains 1 Uppercase, 1 Lowercase , 1 Number and 1 Symbol",
+	})
+
+    const formValid = $derived(
+		(form.otp && validations.otp ) &&
+		(form.newPassword && validations.password)
+	);
     
-    let errNewPass = $state(null)
-    let otpError = $state('');
-
-    let isValidPassword = $derived(validatePassword(newPassword))
-    let isValidOtp = $derived(validateOTP(otp))
-
-    $effect(()=>{
-        errNewPass = isValidPassword ? null : "Password should contain atleast 1 Uppercase, 1 lowercase , 1 Number and 1 symbol"
-        otpError = isValidOtp ? null : "OTP is invalid"
-
-        if(!otp || !newPassword || !isValidOtp || !isValidPassword){
-            disabled = true
-        }else{
-            disabled = false
-        }
-    })
 
     const closeAlert = () => errorSubmit = ''
 
+    const toggleSeekPassword = () => showPassword = !showPassword
 
     const handleOtpSubmit = async () => {
-        if (!otp) 
+        if (!form.otp) 
             return otpError = 'Please enter a valid 6-digit OTP.';
         
-        let {otpToken,userUid} = $otpStore
+        let {otpToken,agentUid} = $otpStore
+        let { otp , newPassword } = form
 
-        let result = await changeForgotPassword(userUid,newPassword,otp,otpToken,otpTokenPrev)
+        loading = true
+        let result = await changeForgotPassword(agentUid,newPassword,otp,otpToken,otpTokenPrev)
+        loading = false
+
         if(result.success){
-            otpError = '';
             let data = result.data
-            await goto('/marketing/auth/login',{ replaceState : true })
+            goto('/marketing/auth/login',{ replaceState : true })
         }else{
-            errNewPass = "Invalid inputs!"
+            errorSubmit = result.message
         }
         
     }
 
 
     const handleResendOtp = async () => {
-        let {otpToken,userUid,userId,id_type, countryName} = $otpStore
-        count++
-        let result = await resendOtp(userId,userUid,id_type,count, countryName)
+        let {otpToken,agentUid,agentId} = $otpStore
+        resendOtpCount++
+        let result = await resendOtp(agentId,agentUid,resendOtpCount)
         if(result.success){
             otpTokenPrev = otpToken
             $otpStore.otpToken = result.otpToken
+        }else{
+            errorSubmit = result.message
         }
 
     }
@@ -85,6 +98,10 @@
 </script>
 
 <main class="px-4 py-20">
+
+    {#if loading}
+        <FullLoading/>
+    {/if}
 
     {#if errorSubmit}
         <AlertModal message={errorSubmit} msgTextColor={'red'} handleOnOk={closeAlert}/>
@@ -96,18 +113,16 @@
             <h1 class="text-center md:text-2xl text-xl uppercase text-slate-700 font-bold mb-6">{t_forgot_pass_change}</h1>
 
             <div class="space-y-5">
-                <InputField bind:value={otp} label={t_enterOtp} type={'number'} errorMsg={otpError}/>
+                <InputField required={true} bind:value={form.otp} label={t_enterOtp} type={'number'} errorMsg={formErrors.otp}/>
 
-                <InputField bind:value={newPassword} errorMsg={errNewPass} label={t_new_password} type={'password'} disabled={loading}/>
+                <PasswordInput bind:password={form.newPassword} errPassword={formErrors.password} {showPassword} toggleSeekPassword={toggleSeekPassword}/>
     
-                <button class="" onclick={handleResendOtp}>{t_resend_otp}</button>
-                
-                <button 
-                    type="submit" 
-                    disabled={disabled}
-                    class="px-4 block w-full py-2 bg-violet-500 disabled:bg-gray-500 disabled:opacity-35 text-white rounded hover:bg-blue-600">
-                    {t_submitOtp}
+                <button type="button" disabled={resendOtpCount>=1} onclick={handleResendOtp} 
+                    class="text-sm text-violet-500 font-medium disabled:text-gray-500 disabled:opacity-50">
+                    {t_resend_otp}
                 </button>
+                
+                <SubmitButton disabled={!formValid} />
     
             </div>
         </form>

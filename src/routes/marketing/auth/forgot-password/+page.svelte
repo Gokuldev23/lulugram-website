@@ -1,22 +1,36 @@
 <script>
 	import { goto } from "$app/navigation";
 
-	import { forgotpassword } from "$lib/js/marketing/api/auth";
 	import { otpStore } from "$lib/stores/marketing/otpStore";
+    
+	import { forgotpassword } from "$lib/js/marketing/api/auth";
+	import { validateMobileNumber } from "$lib/js/marketing/utils";
 
 	import Card from "$lib/Components/common/Card.svelte";
 	import InputField from "$lib/Components/common/InputField.svelte";
 	import AlertModal from "$lib/Components/common/AlertModal.svelte";
 	import FullLoading from "$lib/Components/common/FullLoading.svelte";
-	import { validateMobileNumber } from "$lib/js/marketing/utils";
+	import AgentIdInput from "$lib/Components/marketing/AgentIdInput.svelte";
+	import SubmitButton from "$lib/Components/common/SubmitButton.svelte";
 
 
 
-    let userId = $state(null);  
-    let countryCode = $state('+91')
-    let errorSubmit = $state('')
-    let errorNumber = $state(null)
-    let disabled = $state(true)
+    let form = $state({
+		agentMobile: null,
+        countryCode:"+91"
+	});
+
+    const validations = $derived({
+		mobile: validateMobileNumber(form.agentMobile),
+	});
+
+    const formErrors = $derived({
+		mobile: validations.mobile ? null : "Invalid mobile number",
+	})
+
+    const formValid = $derived(validations.mobile && form.agentMobile);
+
+    let errorSubmit = $state(false)
     let loading = $state(false)
     
     let t_forgot_pass = "Forgot Password"
@@ -29,48 +43,24 @@
     
     let isValidMobile = $derived(validateMobileNumber(userId))
 
-    $effect(()=>{
-        errorNumber = isValidMobile ? null : 'Mobile number is not valid'
-        disabled = userId && isValidMobile ? false : true
-    })
 
     const handleForgotPass = async (e) => {
         e.preventDefault();
+
+        let {agentMobile , countryCode } = form
         
-        console.log("comes")
-        goto('/marketing/auth/forgot-password-change');
-        return            
-        // loading = true
-        let result = await forgotpassword(userId, countryCode, selectedCountry.countryName)
+        loading = true
+        let result = await forgotpassword(agentMobile, countryCode)
         loading = false
+
         if(result.success){
-            userIdType = result.userIdType
-
-            let otpToken = result.otpToken
-            let userUid = result.userUid
-            let userId = result.userId
-            let id_type = result.userIdType
-
-            otpStore.set({
-                userUid,
-                userId,
-                id_type,
-                otp:'',
-                otpToken
-            })
-
-            // otpStore.set({...result})
             goto(`/marketing/auth/forgot-password-change`);            
         }else{
             errorSubmit = result.message
         }
     }
 
-
-
     const closeAlert = () => errorSubmit = ''
-
-
 
 </script>
   
@@ -90,19 +80,9 @@
     
             <div class="space-y-5">
     
-                <div class="flex gap-1">
-                    <select bind:value={countryCode} class="rounded-l-lg" name="" id="">
-                        <option value="+91">+91</option>
-                        </select>
-                    <InputField bind:value={userId} errorMsg={errorNumber} label={t_mobileNumber} type={'number'} disabled={loading}/>
-                </div>
+                <AgentIdInput bind:mobile={form.agentMobile} bind:countryCode={form.countryCode} mobileErr={formErrors.mobile}/>
     
-                <button 
-                    type="submit"
-                    disabled={disabled}
-                    class="px-4 block w-full py-2 bg-violet-500 disabled:bg-gray-500 disabled:opacity-35 text-white rounded hover:bg-blue-600">
-                    {t_submit}
-                </button>
+                <SubmitButton disabled={!formValid}/>
     
                 <div class="flex justify-between px-4">
                     <a href="/marketing/auth/register">{t_register}</a>

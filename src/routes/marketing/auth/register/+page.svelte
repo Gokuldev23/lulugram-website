@@ -92,7 +92,7 @@
         }
     }
 
-    $effect(()=>{
+    $effect.pre(()=>{
         if($agentStore.signedIn){
             goto('/marketing/agent-dashboard',{replaceState:true})
         }

@@ -66,8 +66,7 @@
         }
     }
 
-    $effect(()=>{
-        console.log($agentStore.signedIn)
+    $effect.pre(()=>{
         if($agentStore.signedIn){
             goto('/marketing/agent-dashboard',{replaceState:true})
         }
@@ -97,7 +96,7 @@
             <a class="text-sm  block text-violet-500" href="/marketing/auth/forgot-password">{t_forgotpassword}</a>
 
             <div class="space-y-3">
-                <SubmitButton btnText={t_login} disabled={!formValid}/>
+                <SubmitButton btnText={t_login} disabled={!formValid}/> 
 
                 <p class="text-sm md:text-base text-center">{t_not_agent}
                     <a href="/marketing/auth/register" class="text-violet-600 hover:text-violet-800">{t_register_here}</a>

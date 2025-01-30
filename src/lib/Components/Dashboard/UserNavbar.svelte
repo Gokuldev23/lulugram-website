@@ -22,36 +22,36 @@
 <nav class="bg-gray-800 p-2 shadow-md">
     <ul class="flex flex-wrap justify-between w-full">
         <li class="flex-1">
-            <a
+            <button
                 on:click={() => navigateTo('Referrals')}
                 class={`block p-2 rounded text-white text-center text-sm sm:text-base transition-all duration-300 ${page === 'Referrals' ? 'bg-gray-700' : 'hover:bg-gray-600 hover:mx-2'}`}
             >
                 {t_referral}
-            </a>
+            </button>
         </li>
         <li class="flex-1">
-            <a
+            <button
                 on:click={() => navigateTo('Agent Statistics')}
                 class={`block p-2 rounded text-white text-center text-sm sm:text-base transition-all duration-300 ${page === 'Agent Statistics' ? 'bg-gray-700' : 'hover:bg-gray-600 hover:mx-2'}`}
             >
                {t_agent_statistics}
-            </a>
+            </button>
         </li>
         <li class="flex-1">
-            <a
+            <button
                 on:click={() => navigateTo('Payment Information')}
                 class={`block p-2 rounded text-white text-center text-sm sm:text-base transition-all duration-300 ${page === 'Payment Information' ? 'bg-gray-700' : 'hover:bg-gray-600 hover:mx-2'}`}
             >
                 {t_payment_information}
-            </a>
+            </button>
         </li>
         <li class="flex-1">
-            <a
+            <button
                 on:click={() => navigateTo('Agent Details')}
                 class={`block p-2 rounded text-white text-center text-sm sm:text-base transition-all duration-300 ${page === 'Agent Details' ? 'bg-gray-700' : 'hover:bg-gray-600 hover:mx-2'}`}
             >
                 {t_agent_details}
-            </a>
+            </button>
         </li>
     </ul>
 </nav>

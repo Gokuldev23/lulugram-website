@@ -1,8 +1,12 @@
 <script>
+	import { agentStore } from "$lib/stores/marketing/agentStore";
+
+
+
     let t_agent_details = "Agent Details";
     let t_mobile_number = "Mobile Number : ";
     let t_email = "Email : ";
-    let t_aadhar_number = "Aadhar Number : ";
+    let t_aadhar_verified = "Aadhar Verified : ";
     let t_address = "Address : ";
     let t_pin = "Pin : ";
     let t_aadhar_card_number = "Aadhar Number : ";
@@ -12,6 +16,16 @@
     let t_account_number = "Account Number : ";
     let t_ifsc_code = "IFSC Code : ";
 
+    $: mobileNumber = $agentStore.phone
+    $: email = $agentStore.email
+    $: agentAddress = $agentStore.address
+    $: aadharVerified = $agentStore.aadharVerified ? "Verified" : "Not Verified"
+    
+    $: district = agentAddress?.district
+    $: city = agentAddress?.city
+    $: state = agentAddress?.state
+    $: pincode = agentAddress?.pin
+
 </script>
 
 <main class="p-4 md:p-8 bg-gradient-to-br from-blue-50 to-purple-50 min-h-screen flex flex-col items-center">
@@ -20,32 +34,32 @@
         <!-- Mobile Number -->
         <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg mb-4">
             <span class="text-gray-600 text-sm font-medium">{t_mobile_number} </span>
-            <span class="text-gray-800 font-semibold">+91 98765 43210</span>
+            <span class="text-gray-800 font-semibold">{mobileNumber}</span>
         </div>
 
         <!-- Email -->
         <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg mb-4">
             <span class="text-gray-600 text-sm font-medium">{t_email}</span>
-            <span class="text-gray-800 font-semibold">agent@example.com</span>
+            <span class="text-gray-800 font-semibold">{email}</span>
         </div>
 
         
         <!-- Address -->
         <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg mb-4">
             <span class="text-gray-600 text-sm font-medium">{t_address}</span>
-            <span class="text-gray-800 font-semibold text-right">123, Main Street, Trivandrum, Kerala</span>
+            <span class="text-gray-800 font-semibold text-right">{district} , {city} , {state}</span>
         </div>
         
         <!-- Pin -->
         <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg mb-4">
             <span class="text-gray-600 text-sm font-medium">{t_pin}</span>
-            <span class="text-gray-800 font-semibold text-right">560001</span>
+            <span class="text-gray-800 font-semibold text-right">{pincode}</span>
         </div>
 
         <!-- Aadhar Details -->
         <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg mb-4">
-            <span class="text-gray-600 text-sm font-medium">{t_aadhar_number} </span>
-            <span class="text-gray-800 font-semibold">1234 5678 9012</span>
+            <span class="text-gray-600 text-sm font-medium">{t_aadhar_verified} </span>
+            <span class="text-gray-800 font-semibold">{aadharVerified}</span>
         </div>
 
          <!-- Pan Card Number -->

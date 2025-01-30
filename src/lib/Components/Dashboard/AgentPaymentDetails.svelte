@@ -28,11 +28,33 @@
 
     // Calculate total amount paid till date
     let totalAmountPaid = paymentInfo.previousPayments.reduce((total, payment) => total + payment.amount, 0) + paymentInfo.amountPaid;
+
 </script>
 
 <main class="p-4 md:p-8 bg-gradient-to-br from-blue-50 to-purple-50 min-h-screen flex flex-col items-center">
     <h1 class="text-3xl md:text-4xl mb-8 text-gray-900 font-extrabold text-center">{t_payment_information}</h1>
     <div class="w-full max-w-4xl bg-white p-6 md:p-8 rounded-xl shadow-2xl mb-8">
+
+        <!-- Total Payment Information Section -->
+
+        <section class="mb-8">
+            <h2 class="text-2xl md:text-3xl mb-6 text-gray-800 font-bold border-b border-gray-200 pb-3">{t_totalPaymentInformation}</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <p class="text-gray-600 text-sm">{t_totalAmountPaidTillDate}</p>
+                    <p class="text-xl font-semibold text-gray-800">₹ {totalAmountPaid}</p>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <p class="text-gray-600 text-sm">{t_nextDueDate}</p>
+                    <p class="text-xl font-semibold text-gray-800">{paymentInfo.nextPaymentDate}</p>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <p class="text-gray-600 text-sm">{t_amountToBeReimbursed}</p>
+                    <p class="text-xl font-semibold text-gray-800">₹ {paymentInfo.amountDue}</p>
+                </div>
+            </div>
+        </section>
+
         <!-- Current Payment Section -->
         <section class="mb-8">
             <h2 class="text-2xl md:text-3xl mb-6 text-gray-800 font-bold border-b border-gray-200 pb-3">{t_current_payment}</h2>
@@ -69,24 +91,7 @@
             </div>
         </section>
 
-        <!-- Total Payment Information Section -->
-        <section>
-            <h2 class="text-2xl md:text-3xl mb-6 text-gray-800 font-bold border-b border-gray-200 pb-3">{t_totalPaymentInformation}</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-gray-50 p-4 rounded-lg">
-                    <p class="text-gray-600 text-sm">{t_totalAmountPaidTillDate}</p>
-                    <p class="text-xl font-semibold text-gray-800">₹ {totalAmountPaid}</p>
-                </div>
-                <div class="bg-gray-50 p-4 rounded-lg">
-                    <p class="text-gray-600 text-sm">{t_nextDueDate}</p>
-                    <p class="text-xl font-semibold text-gray-800">{paymentInfo.nextPaymentDate}</p>
-                </div>
-                <div class="bg-gray-50 p-4 rounded-lg">
-                    <p class="text-gray-600 text-sm">{t_amountToBeReimbursed}</p>
-                    <p class="text-xl font-semibold text-gray-800">₹ {paymentInfo.amountDue}</p>
-                </div>
-            </div>
-        </section>
+        
     </div>
 </main>
 

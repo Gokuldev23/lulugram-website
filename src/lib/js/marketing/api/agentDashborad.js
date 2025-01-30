@@ -22,7 +22,7 @@ export const getReferralsDetails = async (a_token) => {
 }
 
 
-export const getCountForEachProduct = async (a_token) => {
+export const getUsersCountForEachProduct = async (a_token) => {
 
     let url = `${dataUrlRoot}/agents/referral/num-users/each-product`
 

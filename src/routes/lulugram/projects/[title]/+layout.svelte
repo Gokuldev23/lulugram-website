@@ -1,6 +1,6 @@
 <script>
     import Navbar from '$lib/Components/lulugram/Navbar.svelte';
-    import Footer from '$lib/Components/Footer.svelte';
+    import Footer from '$lib/Components/lulugram/Footer.svelte';
 
     let { children } = $props();
 

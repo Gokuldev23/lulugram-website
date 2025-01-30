@@ -1,28 +1,61 @@
 <script>
     import Icon from '@iconify/svelte';
+	import { onMount } from 'svelte';
 
+	import { getReferralsDetails } from '$lib/js/marketing/api/agentDashborad';
+	import { agentStore } from '$lib/stores/marketing/agentStore';
+
+	import Loading from '../common/Loading.svelte';
+	import AlertModal from '../common/AlertModal.svelte';
+
+
+    
     let t_referral = "Referrals";
     let t_srNo = "Sr. No";
     let t_name = "Name";
     let t_appName = "App Name";
     let t_platform = "Platform";
     let t_subscriptionStatus = "Subscription Status";
-    let t_amountPaid = "Amount Paid";
-    let t_commissionPercentage = "Commission Percentage";
+    let t_amountPaid = "Amount Paid (₹)";
+    let t_commissionAmount = "Commission Amount (₹)";
     let t_subscribed = "Subscribed";
     let t_not_subscribed = "Not Subscribed";
 
-    // Example: Dynamic referral data
-    let referralData = [
-        { srNo: 1, name: "John Doe", appName: "Crossword", platform: "Android", subscriptionStatus: "Subscribed", amountPaid: 1000, commissionPercentage: 30 },
-        { srNo: 2, name: "Jane Smith", appName: "Gramlok", platform: "iOS", subscriptionStatus: "Subscribed", amountPaid: 500, commissionPercentage: 15 },
-        { srNo: 3, name: "Alice Johnson", appName: "Vidyavart", platform: "Web", subscriptionStatus: "Subscribed", amountPaid: 1000, commissionPercentage: 25 },
-        { srNo: 4, name: "Bob Brown", appName: "Crossword", platform: "Web", subscriptionStatus: "Subscribed", amountPaid: 1000, commissionPercentage: 30 },
-        { srNo: 5, name: "Charlie Davis", appName: "Gramlok", platform: "Android", subscriptionStatus: "Subscribed", amountPaid: 500, commissionPercentage: 15 },
-    ];
+
+    $: a_token =  $agentStore.a_token
+
+    let referralData = []
+    let loading = false
+    let errorMsg = ''
+
+    const closeErrAlert = () => errorMsg = ''
+
+    const handleGetReferralsDetails = async () => {
+
+        loading = true
+        let result = await getReferralsDetails(a_token)
+        loading = false
+
+        if(result.success){
+            referralData = result.data
+        }else{
+            errorMsg = result.message
+        }
+    }
+
+    onMount(()=> {
+        handleGetReferralsDetails()
+    })
+
+
 </script>
 
 <main class="p-4 md:p-8 bg-gray-100 min-h-screen flex flex-col items-center">
+
+    {#if errorMsg}
+        <AlertModal message={errorMsg} msgTextColor={'red'} handleOnOk={closeErrAlert}/>
+    {/if}
+
     <h1 class="text-3xl md:text-4xl mb-4 text-gray-900 font-extrabold">{t_referral}</h1>
     <div class="w-full bg-white p-4 md:p-5 rounded-lg shadow-lg overflow-x-auto">
         <div class="hidden md:block">
@@ -35,19 +68,19 @@
                         <th class="p-2 md:p-4 text-left bg-gray-200 font-bold text-gray-700 text-sm md:text-base">{t_platform}</th>
                         <th class="p-2 md:p-4 text-left bg-gray-200 font-bold text-gray-700 text-sm md:text-base">{t_subscriptionStatus}</th>
                         <th class="p-2 md:p-4 text-left bg-gray-200 font-bold text-gray-700 text-sm md:text-base">{t_amountPaid}</th>
-                        <th class="p-2 md:p-4 text-left bg-gray-200 font-bold text-gray-700 text-sm md:text-base">{t_commissionPercentage}</th>
+                        <th class="p-2 md:p-4 text-left bg-gray-200 font-bold text-gray-700 text-sm md:text-base">{t_commissionAmount}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {#each referralData as item}
+                    {#each referralData as item,i}
                         <tr class="hover:bg-gray-100">
-                            <td class="p-2 md:p-4 border-b border-gray-300 text-sm md:text-base bg-gray-50">{item.srNo}</td>
-                            <td class="p-2 md:p-4 border-b border-gray-300 text-sm md:text-base bg-gray-50">{item.name}</td>
-                            <td class="p-2 md:p-4 border-b border-gray-300 text-sm md:text-base bg-gray-50">{item.appName}</td>
+                            <td class="p-2 md:p-4 border-b border-gray-300 text-sm md:text-base bg-gray-50">{i+1}</td>
+                            <td class="p-2 md:p-4 border-b border-gray-300 text-sm md:text-base bg-gray-50">{item.username}</td>
+                            <td class="p-2 md:p-4 border-b border-gray-300 text-sm md:text-base bg-gray-50">{"Android"}</td>
                             <td class="p-2 md:p-4 border-b border-gray-300 text-sm md:text-base bg-gray-50">{item.platform}</td>
                             <td class="p-2 md:p-4 border-b border-gray-300 text-sm md:text-base bg-gray-50 text-center">
-                                <div class="flex items-center justify-center">
-                                    {#if item.subscriptionStatus === "Subscribed"}
+                                <div class="flex items-center">
+                                    {#if item.is_subscribed}
                                         <Icon icon="fa:check-circle" class="text-green-500" />
                                         <p class="ml-2 hidden sm:block">{t_subscribed}</p>
                                     {:else}
@@ -56,12 +89,22 @@
                                     {/if}
                                 </div>
                             </td>
-                            <td class="p-2 md:p-4 border-b border-gray-300 text-sm md:text-base bg-gray-50">{item.amountPaid}</td>
-                            <td class="p-2 md:p-4 border-b border-gray-300 text-sm md:text-base bg-gray-50">{item.commissionPercentage}%</td>
+                            <td class="p-2 md:p-4 border-b border-gray-300 text-sm md:text-base bg-gray-50">{item.amount}</td>
+                            <td class="p-2 md:p-4 border-b border-gray-300 text-sm md:text-base bg-gray-50">{item.commssion_percentage}</td>
                         </tr>
                     {/each}
                 </tbody>
             </table>
+            {#if loading}
+                <div class="w-20 mx-auto py-10">
+                    <Loading width={"40px"}/>
+                </div>
+            {:else if referralData.length == 0}
+                <div class="py-20 text-center md:text-lg text-sm ">
+                    <p class="">No Referral Found!</p>
+                    <p class="">Start Referring using your <span class="font-semibold text-xl"> Referral number </span></p>
+                </div>
+            {/if}
         </div>
         <div class="block md:hidden">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -79,7 +122,7 @@
                         <p class="text-gray-600">{t_platform} : <strong> {item.platform} </strong></p>
                         <p class="text-gray-600">{t_subscriptionStatus} : <strong> {item.subscriptionStatus} </strong></p>
                         <p class="text-gray-600">{t_amountPaid} : <strong> {item.amountPaid} </strong></p>
-                        <p class="text-gray-600">{t_commissionPercentage} : <strong> {item.commissionPercentage}% </strong></p>
+                        <p class="text-gray-600">{t_commissionAmount} : <strong> {item.commissionPercentage}% </strong></p>
                     </div>
                 {/each}
             </div>

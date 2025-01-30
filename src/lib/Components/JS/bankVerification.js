@@ -1,4 +1,4 @@
-import dataUrlRoot from "./dataUrlRoot";
+import dataUrlRoot from "$lib/js/dataUrlRoot";
 
 export const bankVerify = async (a_token, accountHolderName, accountNumber, ifscCode, branchName, bankName) => {
 

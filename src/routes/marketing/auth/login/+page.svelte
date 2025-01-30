@@ -94,8 +94,11 @@
             <div class="space-y-3">
                 <SubmitButton btnText={t_login} disabled={!formValid}/> 
 
-                <p class="text-sm md:text-base text-center">{t_not_agent}
-                    <a href="/marketing/auth/register" class="text-violet-600 hover:text-violet-800">{t_register_here}</a>
+                <p class="text-sm md:text-base text-center">
+                    {t_not_agent}
+                    <a href="/marketing/auth/register" class="text-violet-600 hover:text-violet-800">
+                        {t_register_here}
+                    </a>
                 </p>
             </div>
 

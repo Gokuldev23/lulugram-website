@@ -11,6 +11,7 @@
     import Card from '$lib/Components/common/Card.svelte';
 	import AlertModal from '$lib/Components/common/AlertModal.svelte';
     import InputField from '$lib/Components/common/InputField.svelte';
+	import SubmitButton from '$lib/Components/common/SubmitButton.svelte';
 
 
     let t_enter_otp = "Enter OTP";
@@ -96,13 +97,7 @@
                 {t_resend_otp}
             </button>
             
-            <button
-                class="bg-violet-600 hover:bg-blue-700 disabled:bg-gray-500 disabled:opacity-35 w-full text-white font-bold py-2 px-4 rounded mt-4"
-                type="submit"
-                disabled={disabled}
-            >
-                {t_submit}
-            </button>
+            <SubmitButton disabled={disabled}/>
         </form>
 
     </Card>

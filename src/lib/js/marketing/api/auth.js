@@ -12,6 +12,7 @@ export const getAgentStatus = async ()=>{
             credentials: 'include'
         })
         const agentdata = await res.json()
+        console.log("agentdata",agentdata)
         return agentdata
     }
     catch(e) {

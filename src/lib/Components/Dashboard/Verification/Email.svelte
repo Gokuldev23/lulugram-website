@@ -4,6 +4,7 @@
     import { emailVerify, otpVerifyEmail } from '$lib/Components/JS/emailVerification';
     import { agentStore } from '$lib/stores/marketing/agentStore';
     import { otpStore } from '$lib/stores/marketing/otpStore';
+    import { getAgentStatus } from '$lib/js/marketing/api/auth';
 
     let t_email_verification = "Email Verification";
     let t_enter_email = "Enter your email";
@@ -18,29 +19,29 @@
     let email = "";
     let otp = "";
     let otpToken = ""
-    let isEmailVerified = false;
     let isOtpSent = false;
     let isEmailValid = false;
-    let showEmailVerifyMessage = false;
     let errorMessage = "";
 
     $: a_token = $agentStore.a_token
+    $: isEmailVerified = $agentStore.emailVerified
+    $: email = $agentStore.email
+    $: console.log(email, a_token, isEmailVerified)
+    $: console.log($agentStore.agentId)
 
-    function verifyEmail() {
-        setTimeout(() => {
-            isEmailVerified = true;
-            showEmailVerifyMessage = true; 
-            console.log("Email verified successfully!");
-
-            setTimeout(() => {
-                showEmailVerifyMessage = false;
-            }, 5000);
-        }, 2000); 
+    const agentStatus = async() => {
+        let result = await getAgentStatus(a_token);
+        console.log("result",result);
+        // if(result.success){
+        //     console.log("result",result.data);
+        // } else {
+        //     console.log("Error fetching agent status");
+        // }
     }
+    $: agentStatus(a_token);
 
-    async function sendEmailToGetOtp() {
+    const sendEmailToGetOtp = async() => {
         let result = await emailVerify(a_token, email);
-        console.log("result", result);
 
         if(result.success){
             isOtpSent = true;
@@ -55,13 +56,19 @@
         }
     }
 
-    async function submitOtp() {
+    const submitOtp = async() => {
         let result = await otpVerifyEmail(a_token, email, otp, otpToken);
-        console.log("result", result);
 
         if(result.success){
-            verifyEmail();
+            isEmailVerified = true;
             errorMessage = ""
+
+            agentStore.set({
+                agentEmail: email,
+                a_token: a_token,
+                isEmailVerified: true
+            });
+
         } else {
             errorMessage = result.message;
         }
@@ -132,11 +139,13 @@
                 {/if}
             </div>
         </div>
-    {:else if showEmailVerifyMessage}
+    {:else}
         <div class="w-full bg-white p-4 md:p-6 rounded-lg shadow-lg max-w-[400px] md:max-w-[500px] lg:max-w-[600px]">
-            <div class="bg-green-50 p-2 md:p-3 rounded-lg text-green-700 text-sm md:text-base">
-                {t_email_verified}
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4 text-center">Email</h2>
+            <div class="bg-green-50 p-4 md:p-6 rounded-lg border border-green-300 text-green-700 text-sm md:text-base">
+                <p class="text-base md:text-lg text-center">{email}</p>
             </div>
         </div>
     {/if}
+    
 </main>

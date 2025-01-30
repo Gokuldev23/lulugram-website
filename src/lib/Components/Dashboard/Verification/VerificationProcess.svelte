@@ -3,7 +3,7 @@
     import BankDetails from "./BankDetails.svelte";
     import AadharDetails from "./AadharDetails.svelte";
 
-    let t_verify_details = "Verify Details";
+    let t_verify_details = "Verification Details";
 </script>
 
 <main>

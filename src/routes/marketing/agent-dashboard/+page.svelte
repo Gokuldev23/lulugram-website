@@ -1,6 +1,7 @@
 <script>
-    import { agentStore } from "$lib/stores/marketing/agentStore";
+    import UserHome from "$lib/Components/Dashboard/UserHome.svelte";
 </script>
 
-
-<h1>{$agentStore.agentName}</h1>
+<main>
+    <UserHome />
+</main>

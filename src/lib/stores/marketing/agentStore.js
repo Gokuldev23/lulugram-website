@@ -1,7 +1,7 @@
 import { writable } from "svelte/store";
 
 export let agentStore = writable({
-    signedIn:true,
+    signedIn:false,
     a_token:"",
     agentUid: "",
     agentId: "",

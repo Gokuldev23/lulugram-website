@@ -7,7 +7,7 @@ export let agentStore = writable({
     agentId: "",
     agentName: "",
     email: "",
-    phone: "",
+    agentPhone: "",
     address: "",
     referralCode: "",
     referralCount: "",

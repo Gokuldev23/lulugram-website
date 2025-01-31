@@ -3,22 +3,29 @@
 </svelte:head>
 
 <script>
+	import { onMount } from 'svelte';
+
+    import { agentStatusLoading } from '$lib/stores/marketing/agentStore';
 	import { getAgentStatus } from '$lib/js/marketing/api/auth';
     
 	import FullLoading from '$lib/Components/common/FullLoading.svelte';
+	import Footer from '$lib/Components/lulugram/Footer.svelte';
+	import { goto } from '$app/navigation';
 
 
     const { children } = $props();
 
-    let loading = $state(false)
 
     const handleGetAgentStatus = async () => {
-        loading = true
+        agentStatusLoading.set(true)
         let res = await getAgentStatus()
-        loading = false
+        if(!res.success){
+            goto('/marketing/auth/login')
+        }
+        agentStatusLoading.set(false)
     }
 
-    $effect(()=>{
+    onMount(()=>{
         handleGetAgentStatus()
     })
 </script>
@@ -26,12 +33,13 @@
 
 <main class="">
 
-    {#if loading}
+    {#if $agentStatusLoading}
         <FullLoading/>
     {:else}
-        <div id="slot">
+        <div id="slot" class="min-h-screen">
             {@render children()}
         </div>
+        <Footer/>
     {/if}
 
 </main>

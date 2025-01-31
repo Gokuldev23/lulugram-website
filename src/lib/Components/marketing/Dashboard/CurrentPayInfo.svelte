@@ -1,5 +1,5 @@
 <script>
-    let t_current_payment = "Current Payment";  
+    let t_current_payment = "Payment Due";  
     let t_amountDue = "Amount Due";
     let t_nextPaymentDate = "Next Payment Date";
     let t_previousAmountPaid = "Previous Amount Paid";

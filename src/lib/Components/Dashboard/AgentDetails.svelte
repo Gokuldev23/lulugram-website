@@ -24,7 +24,7 @@
     $: district = agentAddress?.district
     $: city = agentAddress?.city
     $: state = agentAddress?.state
-    $: pincode = agentAddress?.pin
+    $: pincode = agentAddress?.pinCode
 
 </script>
 

@@ -110,7 +110,7 @@
     <Card class="max-w-lg mx-auto">
         <form onsubmit={handleOtpSubmit} class="">
 
-            <h1 class="text-center md:text-2xl text-xl uppercase text-slate-700 font-bold mb-6">{t_forgot_pass_change}</h1>
+            <FormTitle title={t_forgot_pass_change}/>
 
             <div class="space-y-5">
                 <InputField required={true} bind:value={form.otp} label={t_enterOtp} type={'number'} errorMsg={formErrors.otp}/>

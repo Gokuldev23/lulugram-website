@@ -12,6 +12,7 @@
 	import SubmitButton from "$lib/Components/common/SubmitButton.svelte";
 	import PasswordInput from "$lib/Components/marketing/PasswordInput.svelte";
 	import FullLoading from "$lib/Components/common/FullLoading.svelte";
+	import FormTitle from "$lib/Components/marketing/FormTitle.svelte";
 
 
     let t_change_password = "Change Password"
@@ -74,7 +75,9 @@
     {/if}
 
     <Card class="max-w-lg mx-auto">
-        <h1 class="text-center md:text-3xl text-2xl  uppercase text-slate-700 font-bold mb-6">{t_change_password}</h1>
+
+        <FormTitle title={t_change_password}/>
+        
         <form class="space-y-2">
             <PasswordInput label={t_current_password} bind:password={form.currentPassword} errPassword={formErrors.currentPassword} />
 

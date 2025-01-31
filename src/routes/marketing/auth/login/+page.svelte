@@ -12,6 +12,7 @@
 	import FullLoading from "$lib/Components/common/FullLoading.svelte";
 	import AlertModal from "$lib/Components/common/AlertModal.svelte";
 	import SubmitButton from "$lib/Components/common/SubmitButton.svelte";
+	import FormTitle from "$lib/Components/marketing/FormTitle.svelte";
 
 
     let t_login = "Login"
@@ -21,6 +22,14 @@
 
     let loading = $state(false)
     let errorSubmit = $state('')
+
+    export const snapshot = {
+        capture: () => form,
+		restore: (value) => {
+            return form = value
+        },
+        key : ({ url }) => url.pathname
+    }
 
     let form = $state({
 		agentMobile: null,
@@ -42,6 +51,8 @@
 		(form.agentMobile && validations.mobile) &&
 		(form.agentPassword && validations.password )
 	);
+
+ 
 
 
     const closeAlert = () => errorSubmit = ''
@@ -83,7 +94,8 @@
 
     <Card class=" max-w-lg mx-auto w-full">
         <form onsubmit={handleLoginAgent}  class="space-y-6">
-            <h1 class="text-center md:text-3xl text-2xl  uppercase text-slate-700 font-bold mb-6">{t_login}</h1>
+            
+            <FormTitle title={t_login}/>
 
             <AgentIdInput bind:mobile={form.agentMobile} bind:countryCode={form.countryCode} mobileErr={formErrors.mobile} />
 

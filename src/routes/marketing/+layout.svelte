@@ -3,6 +3,7 @@
 </svelte:head>
 
 <script>
+	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 
     import { agentStatusLoading } from '$lib/stores/marketing/agentStore';
@@ -10,7 +11,6 @@
     
 	import FullLoading from '$lib/Components/common/FullLoading.svelte';
 	import Footer from '$lib/Components/lulugram/Footer.svelte';
-	import { goto } from '$app/navigation';
 
 
     const { children } = $props();
@@ -20,7 +20,7 @@
         agentStatusLoading.set(true)
         let res = await getAgentStatus()
         if(!res.success){
-            goto('/marketing/auth/login')
+            goto('/marketing')
         }
         agentStatusLoading.set(false)
     }
@@ -36,10 +36,9 @@
     {#if $agentStatusLoading}
         <FullLoading/>
     {:else}
-        <div id="slot" class="min-h-screen">
+        <div id="slot" class="">
             {@render children()}
         </div>
-        <Footer/>
     {/if}
 
 </main>

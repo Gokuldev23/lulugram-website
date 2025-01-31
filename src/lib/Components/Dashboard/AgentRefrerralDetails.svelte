@@ -123,6 +123,17 @@
                         <p class="text-gray-600">{t_amountPaid} : <strong> {item.amount} </strong></p>
                         <p class="text-gray-600">{t_commissionAmount} : <strong> {item.commission}</strong></p>
                     </div>
+                {:else}
+                    {#if loading}
+                        <div class="w-20 mx-auto py-10">
+                            <Loading width={"24px"}/>
+                        </div>
+                    {:else if referralData.length == 0}
+                        <div class="py-20 text-center md:text-lg text-sm ">
+                            <p class="">No Referral Found!</p>
+                            <p class="">Start Referring using your <span class="font-semibold text-xl"> Referral number </span></p>
+                        </div>
+                    {/if}
                 {/each}
             </div>
         </div>

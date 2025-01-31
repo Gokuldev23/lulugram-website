@@ -22,7 +22,7 @@ export let projects = [
                       Built with SvelteKit, the app provides an engaging way to master complex words through interactive puzzles tailored to advanced learners. 
                       Each crossword is curated to align with the challenging vocabulary requirements of competitive exams, ensuring users can learn effectively while having fun.
                       The app also includes progress tracking, word definitions, and contextual examples to reinforce learning.`,
-		logo: '/apps-logo/cwdLogo.png',
+		logo: '/apps-logo/cwdLogoNew.png',
         tagLine: 'Master vocabulary, ace competitive exams',
 		link: {
 			web: 'https://www.xcrossword.com',

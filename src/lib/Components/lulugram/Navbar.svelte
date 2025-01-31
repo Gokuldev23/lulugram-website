@@ -15,7 +15,7 @@
 
     <menu class="px-4">
         <li>
-            <a class="bg-black text-white font-semibold flex gap-2 items-center px-4 py-1 rounded-full" href="/marketing/auth/login">
+            <a class="bg-black text-white font-semibold flex gap-2 items-center px-4 py-1 rounded-full" href="/marketing">
                 <Icon icon="nimbus:marketing" width="16" height="16" />
                 Marketing
             </a>

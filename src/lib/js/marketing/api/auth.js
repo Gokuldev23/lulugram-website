@@ -11,31 +11,36 @@ export const getAgentStatus = async () => {
 		});
 		const result = await res.json();
 
-        let agentData = result.data
+		if(result.success){
 
-		let data = {
-            signedIn:true,
-            a_token:result.a_token,
-            agentUid: agentData.agent_uid,
-            agentId: agentData.agent_id,
-            agentName: agentData.agentname,
-            email: agentData.email,
-            phone: agentData.phone_number,
-            address: agentData.address,
-            referralCode: agentData.agent_referal_code,
-            referralCount: agentData.referral_count,
-            createdAt: agentData.created_at,
-            countryCode: agentData.country_code,
-            countryName: agentData.country_name,
-            emailVerified: agentData.email_verified,
-            bankVerified: agentData.bank_verified,
-            aadharVerified: agentData.adhar_verified,
-            profilePic: agentData.profile_pic_url,
-            profileImageSizes: agentData.profile_image_sizes,
-            expiresIn: result.expiresIn
-        }
-         
-        agentStore.set({...data})
+			let agentData = result.data
+	
+			let data = {
+				signedIn:true,
+				a_token:result.a_token,
+				agentUid: agentData.agent_uid,
+				agentId: agentData.agent_id,
+				agentName: agentData.agentname,
+				email: agentData.email,
+				phone: agentData.phone_number,
+				address: agentData.address,
+				referralCode: agentData.agent_referal_code,
+				referralCount: agentData.referral_count,
+				createdAt: agentData.created_at,
+				countryCode: agentData.country_code,
+				countryName: agentData.country_name,
+				emailVerified: agentData.email_verified,
+				bankVerified: agentData.bank_verified,
+				aadharVerified: agentData.adhar_verified,
+				profilePic: agentData.profile_pic_url,
+				profileImageSizes: agentData.profile_image_sizes,
+				expiresIn: result.expiresIn
+			}
+			 
+			agentStore.set({...data})
+		}else{
+			agentStore.set({ signedIn: false, agentUid: '', agentId: '', agentName: '', token: '' });
+		}
 
 		return result;
 	} catch (e) {
@@ -331,3 +336,36 @@ export const confirmDeleteAccount = async (a_token, data) => {
 };
 
 
+export const editNameAddress = async (a_token, data) => {
+	let url = `${dataUrlRoot}/agents/profile/details`;
+
+	try {
+		const res = await fetch(url, {
+			method: 'PUT',
+			headers: {
+				Authorization: `Bearer ${a_token}`,
+				'Content-Type': 'application/json' // Ensure the server understands you're sending JSON
+			},
+			body: JSON.stringify(data)
+		});
+
+		const response = await res.json();
+		if (response.success) {
+			// Transform the response data to match the expected structure
+			const transformedData = {
+				...response.data,
+				agentName: response.data.agentname, // Rename agentname to agentName
+			};
+			delete transformedData.agentname; // Remove the old key
+
+			agentStore.update((store) => {
+				return { ...store, ...transformedData };
+			});
+		}
+		// console.log("response", response);
+		return response;
+	} catch (error) {
+		console.error(`Error fetching details: ${error.message}`);
+		return { success: false, message: 'error fetching' };
+	}
+};

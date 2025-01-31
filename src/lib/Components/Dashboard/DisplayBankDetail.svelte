@@ -23,9 +23,8 @@
 
     const getDetailsOfBank = async (a_token) => {
         let result = await getBankDetails(a_token);
-
         if (result.success) {
-            let data = result.data;
+            let data = result.data[0];
             bankDetails = {
                 account_holder_name: data.account_holder_name,
                 account_number: `XXXXXXXX${data.account_number.slice(-4)}`,

@@ -8,7 +8,7 @@
     let t_dashboard = "Dashboard";
     let t_home = "Home";
     let t_verification = "Verification";
-    let t_settings = "Settings";
+    let t_profile = "Profile";
 
     function navigateTo(page) {
         activePage.set(page);
@@ -26,10 +26,11 @@
     <div class="text-lg font-bold sm:text-xl md:text-2xl ">
         {t_dashboard}
     </div>
-    <ul class="flex md:gap-8 gap-2">
-        <li><button class="hover:underline text-sm sm:text-base" on:click={() => navigateTo('home')}>{t_home}</button></li>
-        <li><button class="hover:underline text-sm sm:text-base" on:click={() => navigateTo('verification')}>{t_verification}</button></li>
-        <li><button class="hover:underline text-sm sm:text-base" on:click={() => navigateTo('settings')}>{t_settings}</button></li>
+    <div class="text-lg font-bold sm:text-xl md:text-2xl">{t_dashboard}</div>
+    <ul class="flex gap-8">
+        <li><a href="#" class="hover:underline text-sm sm:text-base" on:click={() => navigateTo('home')}>{t_home}</a></li>
+        <li><a href="#" class="hover:underline text-sm sm:text-base" on:click={() => navigateTo('verification')}>{t_verification}</a></li>
+        <li><a href="#" class="hover:underline text-sm sm:text-base" on:click={() => navigateTo('profile')}>{t_profile}</a></li>
     </ul>
 </nav>
 

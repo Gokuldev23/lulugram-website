@@ -1,5 +1,5 @@
 <script>
-    import VerificationProcess from "./Verification/VerificationProcess.svelte";
+    import VerificationProcess from "./VerificationProcess.svelte";
 </script>
 
 <main>

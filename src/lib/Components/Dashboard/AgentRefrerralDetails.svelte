@@ -30,8 +30,9 @@
 
     const closeErrAlert = () => errorMsg = ''
 
-    const handleGetReferralsDetails = async () => {
-
+    const handleGetReferralsDetails = async (signedIn) => {
+        if(!signedIn)
+          return
         loading = true
         let result = await getReferralsDetails(a_token)
         loading = false
@@ -43,9 +44,7 @@
         }
     }
 
-    onMount(()=> {
-        handleGetReferralsDetails()
-    })
+    $: handleGetReferralsDetails($agentStore.signedIn)
 
 
 </script>
@@ -90,7 +89,7 @@
                                 </div>
                             </td>
                             <td class="p-2 md:p-4 border-b border-gray-300 text-sm md:text-base bg-gray-50">{item.amount}</td>
-                            <td class="p-2 md:p-4 border-b border-gray-300 text-sm md:text-base bg-gray-50">{item.commssion_percentage}</td>
+                            <td class="p-2 md:p-4 border-b border-gray-300 text-sm md:text-base bg-gray-50">{item.commission}</td>
                         </tr>
                     {/each}
                 </tbody>
@@ -122,7 +121,7 @@
                         <p class="text-gray-600">{t_platform} : <strong> {item.platform} </strong></p>
                         <p class="text-gray-600">{t_subscriptionStatus} : <strong> {item.is_subscribed? t_subscribed : t_not_subscribed} </strong></p>
                         <p class="text-gray-600">{t_amountPaid} : <strong> {item.amount} </strong></p>
-                        <p class="text-gray-600">{t_commissionAmount} : <strong> {item.commssion_percentage}</strong></p>
+                        <p class="text-gray-600">{t_commissionAmount} : <strong> {item.commission}</strong></p>
                     </div>
                 {/each}
             </div>

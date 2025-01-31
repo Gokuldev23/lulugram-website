@@ -21,3 +21,6 @@ export let agentStore = writable({
     profileImageSizes: "",
     expiresIn: ""
 })
+
+
+export let agentStatusLoading = writable(false)

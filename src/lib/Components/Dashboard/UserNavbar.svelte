@@ -24,7 +24,7 @@
         <li class="flex-1">
             <button
                 on:click={() => navigateTo('Referrals')}
-                class={`block p-2 rounded text-white text-center text-sm sm:text-base transition-all duration-300 ${page === 'Referrals' ? 'bg-gray-700' : 'hover:bg-gray-600 hover:mx-2'}`}
+                class={`block p-2 w-full rounded text-white text-center text-sm sm:text-base transition-all duration-300 ${page === 'Referrals' ? 'bg-gray-700' : 'hover:bg-gray-600 hover:mx-2'}`}
             >
                 {t_referral}
             </button>
@@ -32,7 +32,7 @@
         <li class="flex-1">
             <button
                 on:click={() => navigateTo('Agent Statistics')}
-                class={`block p-2 rounded text-white text-center text-sm sm:text-base transition-all duration-300 ${page === 'Agent Statistics' ? 'bg-gray-700' : 'hover:bg-gray-600 hover:mx-2'}`}
+                class={`block p-2 w-full rounded text-white text-center text-sm sm:text-base transition-all duration-300 ${page === 'Agent Statistics' ? 'bg-gray-700' : 'hover:bg-gray-600 hover:mx-2'}`}
             >
                {t_agent_statistics}
             </button>
@@ -40,7 +40,7 @@
         <li class="flex-1">
             <button
                 on:click={() => navigateTo('Payment Information')}
-                class={`block p-2 rounded text-white text-center text-sm sm:text-base transition-all duration-300 ${page === 'Payment Information' ? 'bg-gray-700' : 'hover:bg-gray-600 hover:mx-2'}`}
+                class={`block p-2 w-full rounded text-white text-center text-sm sm:text-base transition-all duration-300 ${page === 'Payment Information' ? 'bg-gray-700' : 'hover:bg-gray-600 hover:mx-2'}`}
             >
                 {t_payment_information}
             </button>
@@ -48,7 +48,7 @@
         <li class="flex-1">
             <button
                 on:click={() => navigateTo('Agent Details')}
-                class={`block p-2 rounded text-white text-center text-sm sm:text-base transition-all duration-300 ${page === 'Agent Details' ? 'bg-gray-700' : 'hover:bg-gray-600 hover:mx-2'}`}
+                class={`block p-2 w-full rounded text-white text-center text-sm sm:text-base transition-all duration-300 ${page === 'Agent Details' ? 'bg-gray-700' : 'hover:bg-gray-600 hover:mx-2'}`}
             >
                 {t_agent_details}
             </button>

@@ -1,7 +1,6 @@
 <script>
 	import { agentStore } from "$lib/stores/marketing/agentStore";
-
-
+    import { getBankDetails } from "../JS/bankVerification";
 
     let t_agent_details = "Agent Details";
     let t_mobile_number = "Mobile Number : ";
@@ -15,8 +14,10 @@
     let t_bank_name = "Bank Name : ";
     let t_account_number = "Account Number : ";
     let t_ifsc_code = "IFSC Code : ";
+    let t_branch_name = "Branch Name : ";
 
-    $: mobileNumber = $agentStore.phone
+    $: a_token = $agentStore.a_token
+    $: mobileNumber = $agentStore.agentPhone
     $: email = $agentStore.email
     $: agentAddress = $agentStore.address
     $: aadharVerified = $agentStore.aadharVerified ? "Verified" : "Not Verified"
@@ -25,6 +26,28 @@
     $: city = agentAddress?.city
     $: state = agentAddress?.state
     $: pincode = agentAddress?.pinCode
+
+    let bankAddedStatus = false
+    let bankName = ""
+    let accountNumber = ""
+    let ifscCode = ""
+    let branchName = ""
+
+    const getDetailsOfBank = async(a_token) => {
+        let result = await getBankDetails(a_token);
+        if(result.success){
+            let data = result.data;
+            bankAddedStatus = data.status;
+            bankName = data.bank_name;
+            accountNumber = data.account_number;
+            ifscCode = data.ifsc_code;
+            branchName = data.branch_name;
+        } else {
+            // console.log("Error fetching bank details");
+        }
+    }
+
+    $: getDetailsOfBank(a_token);
 
 </script>
 
@@ -62,32 +85,34 @@
             <span class="text-gray-800 font-semibold">{aadharVerified}</span>
         </div>
 
-         <!-- Pan Card Number -->
-         <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg mb-4">
-            <span class="text-gray-600 text-sm font-medium">{t_pan_card_number} </span>
-            <span class="text-gray-800 font-semibold text-right">BCAPJ0530Q</span>
-        </div>
+        {#if bankAddedStatus}
+            <!-- Bank Details Section -->
+            <h2 class="text-2xl md:text-3xl mb-6 text-gray-800 font-bold border-b border-gray-200 pb-3 mt-8 text-center">{t_bank_details}</h2>
+            <div class="space-y-4">
+                <!-- Bank Name -->
+                <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
+                    <span class="text-gray-600 text-sm font-medium">{t_bank_name} </span>
+                    <span class="text-gray-800 font-semibold">{bankName}</span>
+                </div>
 
-        <!-- Bank Details Section -->
-        <h2 class="text-2xl md:text-3xl mb-6 text-gray-800 font-bold border-b border-gray-200 pb-3 mt-8">{t_bank_details}</h2>
-        <div class="space-y-4">
-            <!-- Bank Name -->
-            <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
-                <span class="text-gray-600 text-sm font-medium">{t_bank_name} </span>
-                <span class="text-gray-800 font-semibold">State Bank of India</span>
-            </div>
+                <!-- Account Number -->
+                <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
+                    <span class="text-gray-600 text-sm font-medium">{t_account_number}</span>
+                    <span class="text-gray-800 font-semibold">{accountNumber}</span>
+                </div>
 
-            <!-- Account Number -->
-            <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
-                <span class="text-gray-600 text-sm font-medium">{t_account_number}</span>
-                <span class="text-gray-800 font-semibold">1234567890</span>
-            </div>
+                <!-- IFSC Code -->
+                <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
+                    <span class="text-gray-600 text-sm font-medium">{t_ifsc_code}</span>
+                    <span class="text-gray-800 font-semibold">{ifscCode}</span>
+                </div>
 
-            <!-- IFSC Code -->
-            <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
-                <span class="text-gray-600 text-sm font-medium">{t_ifsc_code}</span>
-                <span class="text-gray-800 font-semibold">ABCD0123456</span>
+                <!-- Branch Name -->
+                <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
+                    <span class="text-gray-600 text-sm font-medium">{t_branch_name}</span>
+                    <span class="text-gray-800 font-semibold">{branchName}</span>
+                </div>
             </div>
-        </div>
+        {/if}
     </div>
 </main>

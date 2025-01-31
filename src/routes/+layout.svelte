@@ -6,6 +6,7 @@
 
 <script>
 	import '../app.css';
+	import Footer from '$lib/Components/lulugram/Footer.svelte';
 
 	
 	let { children } = $props();
@@ -17,6 +18,7 @@
 	<div id="slot" class="min-h-dvh">
 		{@render children()}
 	</div>
+	<Footer/>
 </main>
 
 

@@ -12,6 +12,7 @@
 	import AlertModal from '$lib/Components/common/AlertModal.svelte';
     import InputField from '$lib/Components/common/InputField.svelte';
 	import SubmitButton from '$lib/Components/common/SubmitButton.svelte';
+	import FormTitle from '$lib/Components/marketing/FormTitle.svelte';
 
 
     let t_enter_otp = "Enter OTP";
@@ -85,7 +86,9 @@
     {/if}
 
     <Card class="max-w-sm mx-auto">
-        <h1 class="text-2xl font-bold text-center text-violet-600 mb-5">{t_enter_otp}</h1>
+
+        <FormTitle title={t_enter_otp}/>
+        
         <p class="text-green-500 text-center my-4 font-semibold">{t_otp_sent}</p>
 
         <form onsubmit={handleOtpSubmit} class="w-full">

@@ -12,6 +12,7 @@
 	import FullLoading from "$lib/Components/common/FullLoading.svelte";
 	import AgentIdInput from "$lib/Components/marketing/AgentIdInput.svelte";
 	import SubmitButton from "$lib/Components/common/SubmitButton.svelte";
+	import FormTitle from "$lib/Components/marketing/FormTitle.svelte";
 
 
 
@@ -76,7 +77,8 @@
 
     <Card class="max-w-lg mx-auto">
         <form onsubmit={handleForgotPass}  class="">
-            <h1 class="text-center md:text-2xl text-xl uppercase text-slate-700 font-bold mb-6">{t_forgot_pass}</h1>
+            
+            <FormTitle title={t_forgot_pass}/>
     
             <div class="space-y-5">
     

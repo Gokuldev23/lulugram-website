@@ -7,10 +7,10 @@
 
     // Sample data for payment information
     let paymentInfo = {
-        amountPaid: 500,
-        amountDue: 200,
-        nextPaymentDate: '2023-12-01',
-        previousPaymentDate: '2023-11-01',
+        amountPaid: '',
+        amountDue: '',
+        nextPaymentDate: '',
+        previousPaymentDate: '',
         previousPayments: []
     };
 

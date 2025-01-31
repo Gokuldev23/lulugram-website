@@ -9,6 +9,7 @@
 	import { checkFields, validateAddress, validateMobileNumber, validateName, validatePassword } from "$lib/js/marketing/utils";
 
     import Card from "$lib/Components/common/Card.svelte";
+	import FormTitle from "$lib/Components/marketing/FormTitle.svelte";
 	import InputField from "$lib/Components/common/InputField.svelte";
 	import AddressForm from "$lib/Components/marketing/AddressForm.svelte";
 	import AlertModal from "$lib/Components/common/AlertModal.svelte";
@@ -64,6 +65,14 @@
 		validations.terms
 	);
 
+    export const snapshot = { // this will capture the form and restore when we coming back this page or reload the page
+        capture: () => form,
+		restore: (value) => {
+            return form = value
+        },
+        key : ({ url }) => url.pathname
+    }
+
     const closeAlert = () => errorSubmit = ""
 
     const handleRegisterAgent = async (e) => {
@@ -90,11 +99,6 @@
         }
     }
 
-    $effect.pre(()=>{
-        if($agentStore.signedIn){
-            goto('/marketing/agent-dashboard',{replaceState:true})
-        }
-    })
 
 </script>
 
@@ -113,7 +117,7 @@
 
         <form onsubmit={handleRegisterAgent}  class="space-y-6">
 
-            <h1 class="text-center md:text-3xl text-xl uppercase text-slate-700 font-bold mb-6">{t_register}</h1>
+            <FormTitle title={t_register} />
 
             <InputField label={"Name"} required={true} bind:value={form.agentName} errorMsg={formErrors.name}/>
 

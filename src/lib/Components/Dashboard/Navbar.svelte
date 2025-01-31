@@ -1,4 +1,6 @@
 <script>
+	import Icon from '@iconify/svelte';
+	import { goto } from '$app/navigation';
     import { writable } from 'svelte/store';
 
     export let activePage = writable('home');
@@ -11,14 +13,23 @@
     function navigateTo(page) {
         activePage.set(page);
     }
+
+    const navigateToLulugram = () => {
+        goto('/marketing')
+    }
 </script>
 
 <nav class="bg-gray-800 text-white p-4 flex justify-between items-center">
-    <div class="text-lg font-bold sm:text-xl md:text-2xl">{t_dashboard}</div>
-    <ul class="flex gap-8">
-        <li><a href="#" class="hover:underline text-sm sm:text-base" on:click={() => navigateTo('home')}>{t_home}</a></li>
-        <li><a href="#" class="hover:underline text-sm sm:text-base" on:click={() => navigateTo('verification')}>{t_verification}</a></li>
-        <li><a href="#" class="hover:underline text-sm sm:text-base" on:click={() => navigateTo('settings')}>{t_settings}</a></li>
+    <button class="flex items-center gap-2" on:click={navigateToLulugram}>
+        <Icon icon="eva:arrow-back-outline" width="24" height="24" />
+    </button>
+    <div class="text-lg font-bold sm:text-xl md:text-2xl ">
+        {t_dashboard}
+    </div>
+    <ul class="flex md:gap-8 gap-2">
+        <li><button class="hover:underline text-sm sm:text-base" on:click={() => navigateTo('home')}>{t_home}</button></li>
+        <li><button class="hover:underline text-sm sm:text-base" on:click={() => navigateTo('verification')}>{t_verification}</button></li>
+        <li><button class="hover:underline text-sm sm:text-base" on:click={() => navigateTo('settings')}>{t_settings}</button></li>
     </ul>
 </nav>
 

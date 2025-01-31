@@ -27,7 +27,7 @@
         let result = await getBankDetails(a_token);
 
         if(result.success){
-            let data = result.data;
+            let data = result.data[0];
             status = data.status;
 
             if(status === "active"){

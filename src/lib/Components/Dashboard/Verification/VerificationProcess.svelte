@@ -1,4 +1,5 @@
 <script>
+    import UserProfile from "../UserProfile.svelte";
     import Email from "./Email.svelte";
     import BankDetails from "./BankDetails.svelte";
     // import AadharDetails from "./AadharDetails.svelte";
@@ -7,6 +8,7 @@
 </script>
 
 <main>
+    <UserProfile />
     <h1 class="text-3xl md:text-4xl text-center mt-6 font-bold text-gray-800 mb-4">{t_verify_details}</h1>
     <Email />
     <BankDetails />

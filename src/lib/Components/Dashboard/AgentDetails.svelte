@@ -36,7 +36,7 @@
     const getDetailsOfBank = async(a_token) => {
         let result = await getBankDetails(a_token);
         if(result.success){
-            let data = result.data;
+            let data = result.data[0];
             bankAddedStatus = data.status;
             bankName = data.bank_name;
             accountNumber = data.account_number;

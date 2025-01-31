@@ -72,7 +72,7 @@
 </script>
 
 <main class="p-4 md:p-8 bg-gray-100 flex flex-col items-center">
-    {#if !$agentStore.emailVerified}
+    {#if !isEmailVerified}
         <div class="w-full bg-white p-4 md:p-6 rounded-lg shadow-lg max-w-[400px] md:max-w-[500px] lg:max-w-[600px]">
             <h2 class="text-xl md:text-2xl text-center mb-4 md:mb-6 text-gray-800 font-bold border-b border-gray-300 pb-2">
                 {t_email_verification}

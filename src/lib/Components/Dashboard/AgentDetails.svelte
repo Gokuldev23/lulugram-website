@@ -42,12 +42,6 @@
             accountNumber = data.account_number;
             ifscCode = data.ifsc_code;
             branchName = data.branch_name;
-
-            if(bankAddedStatus === "active"){
-                isBankAdded = true;
-            } else {
-                isBankAdded = false;
-            }
         } else {
             // console.log("Error fetching bank details");
         }

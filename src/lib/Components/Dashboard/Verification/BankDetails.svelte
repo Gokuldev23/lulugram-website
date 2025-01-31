@@ -36,7 +36,7 @@
                 isBankAdded = false;
             }
         } else {
-            console.log("Error fetching bank details");
+            // console.log("Error fetching bank details");
         }
     }
 

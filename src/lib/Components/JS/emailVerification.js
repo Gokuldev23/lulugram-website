@@ -8,7 +8,7 @@ export const emailVerify = async (a_token, email) => {
         email:email
     }
 
-    console.log(data)
+    // console.log(data)
 
     try {
         let response = await fetch(url,{
@@ -20,7 +20,7 @@ export const emailVerify = async (a_token, email) => {
             body:JSON.stringify(data)
         })
         let result = await response.json()
-        console.log(result)
+        // console.log(result)
         return result
     } catch (error) {
         console.log(error)
@@ -52,7 +52,8 @@ export const otpVerifyEmail = async (a_token, email, otp, otpToken) => {
         })
         let result = await response.json()
         if(result.success) {
-            console.log(result)
+            // console.log(result)
+            return result
         }
         return result
     } catch (error) {

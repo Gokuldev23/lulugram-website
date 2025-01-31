@@ -40,6 +40,7 @@ export const getBankDetails = async (a_token) => {
             },
         });
         const res = await response.json()
+        // console.log("Bank Data", res)
         return res
     } 
     catch(e) {

@@ -7,7 +7,7 @@
     $: city = $agentStore.address.city;
     $: district = $agentStore.address.district;
     $: state = $agentStore.address.state;
-    $: pin = $agentStore.address.pin;
+    $: pinCode = $agentStore.address.pinCode;
 
     let isEditModalOpen = false;
 
@@ -16,7 +16,7 @@
     let t_city = "City : ";
     let t_district = "District : "; 
     let t_state = "State : ";
-    let t_pin = "Pin : ";
+    let t_pinCode  = "Pin Code : ";
 
     // Open the edit modal
     function openEditModal() {
@@ -38,7 +38,7 @@
 <main class="p-4 md:p-8 bg-gray-100 min-h-screen flex flex-col items-center">
     {#if isEditModalOpen}
         <EditFieldModal
-            fields={{ agentName, city, district, state, pin }}
+            fields={{ agentName, city, district, state, pinCode }}
             on:close={handleCloseModal}
             on:save={saveChanges}
         />
@@ -69,8 +69,8 @@
                 <span class="text-gray-800 font-semibold"><strong>{state}</strong></span>
             </div>
             <div class="flex justify-between items-center bg-gray-50 p-2 rounded-lg shadow-sm transition-colors duration-300 hover:bg-gray-100">
-                <span class="text-gray-600 text-sm font-medium">{t_pin}</span>
-                <span class="text-gray-800 font-semibold"><strong>{pin}</strong></span>
+                <span class="text-gray-600 text-sm font-medium">{t_pinCode}</span>
+                <span class="text-gray-800 font-semibold"><strong>{pinCode}</strong></span>
             </div>
         </div>
     </div>

@@ -12,7 +12,7 @@
     let t_city = "City : ";
     let t_district = "District : "; 
     let t_state = "State : ";
-    let t_pin = "Pin : ";
+    let t_pinCode = "Pin Code : ";
     let t_cancel = "Cancel";
     let t_save = "Save";
 
@@ -22,7 +22,7 @@
             city: fields.city || '',
             district: fields.district || '',
             state: fields.state || '',
-            pin: fields.pin || ''
+            pinCode: fields.pinCode || ''
         }
     };
 
@@ -31,17 +31,17 @@
         city: '',
         district: '',
         state: '',
-        pin: ''
+        pinCode: ''
     };
 
     const dispatch = createEventDispatcher();
 
     const validateField = (field, value) => {
-        if (field === 'pin') {
+        if (field === 'pinCode') {
             if (!/^\d{6}$/.test(value)) {
-                errors.pin = 'Pin must be exactly 6 digits';
+                errors.pinCode = 'Pin Code must be exactly 6 digits';
             } else {
-                errors.pin = '';
+                errors.pinCode = '';
             }
         } else {
             if (!/^[A-Za-z]{2,}/.test(value)) {
@@ -81,10 +81,10 @@
     $: validateField('city', newFields.address.city);
     $: validateField('district', newFields.address.district);
     $: validateField('state', newFields.address.state);
-    $: validateField('pin', newFields.address.pin);
+    $: validateField('pinCode', newFields.address.pinCode);
 
     $: isFormValid = () => {
-        return !errors.agentName && !errors.city && !errors.district && !errors.state && !errors.pin;
+        return !errors.agentName && !errors.city && !errors.district && !errors.state && !errors.pinCode;
     };
 
 </script>
@@ -141,15 +141,15 @@
             {/if}
         </div>
         <div class="mb-4">
-            <label class="block text-gray-600 text-sm font-medium mb-2">{t_pin}</label>
+            <label class="block text-gray-600 text-sm font-medium mb-2">{t_pinCode}</label>
             <input
                 type="text"
-                bind:value={newFields.address.pin}
+                bind:value={newFields.address.pinCode}
                 class="w-full p-2 border border-gray-300 rounded-lg"
                 placeholder="Enter new Pin"
             />
-            {#if errors.pin}
-                <p class="text-red-500 text-sm mt-1">{errors.pin}</p>
+            {#if errors.pinCode}
+                <p class="text-red-500 text-sm mt-1">{errors.pinCode}</p>
             {/if}
         </div>
         <div class="flex justify-around gap-4">

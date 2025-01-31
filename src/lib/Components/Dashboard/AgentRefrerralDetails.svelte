@@ -76,7 +76,7 @@
                         <tr class="hover:bg-gray-100">
                             <td class="p-2 md:p-4 border-b border-gray-300 text-sm md:text-base bg-gray-50">{i+1}</td>
                             <td class="p-2 md:p-4 border-b border-gray-300 text-sm md:text-base bg-gray-50">{item.username}</td>
-                            <td class="p-2 md:p-4 border-b border-gray-300 text-sm md:text-base bg-gray-50">{"Android"}</td>
+                            <td class="p-2 md:p-4 border-b border-gray-300 text-sm md:text-base bg-gray-50">{item.productName}</td>
                             <td class="p-2 md:p-4 border-b border-gray-300 text-sm md:text-base bg-gray-50">{item.platform}</td>
                             <td class="p-2 md:p-4 border-b border-gray-300 text-sm md:text-base bg-gray-50 text-center">
                                 <div class="flex items-center">
@@ -111,18 +111,18 @@
                 {#each referralData as item}
                     <div class="bg-white p-4 rounded-lg shadow-md">
                         <div class="flex items-center mb-2">
-                            <h2 class="text-lg font-bold text-gray-900">{item.name}</h2>
-                            {#if item.subscriptionStatus === "Subscribed"}
+                            <h2 class="text-lg font-bold text-gray-900">{item.username}</h2>
+                            {#if item.is_subscribed}
                                 <Icon icon="fa:check-circle" class="text-green-500 ml-2" />
                             {:else}
                                 <Icon icon="fa:times-circle" class="text-red-500 ml-2" />
                             {/if}
                         </div>
-                        <p class="text-gray-600">{t_appName} : <strong> {item.appName} </strong></p>
+                        <p class="text-gray-600">{t_appName} : <strong> {item.productName} </strong></p>
                         <p class="text-gray-600">{t_platform} : <strong> {item.platform} </strong></p>
-                        <p class="text-gray-600">{t_subscriptionStatus} : <strong> {item.subscriptionStatus} </strong></p>
-                        <p class="text-gray-600">{t_amountPaid} : <strong> {item.amountPaid} </strong></p>
-                        <p class="text-gray-600">{t_commissionAmount} : <strong> {item.commissionPercentage}% </strong></p>
+                        <p class="text-gray-600">{t_subscriptionStatus} : <strong> {item.is_subscribed? t_subscribed : t_not_subscribed} </strong></p>
+                        <p class="text-gray-600">{t_amountPaid} : <strong> {item.amount} </strong></p>
+                        <p class="text-gray-600">{t_commissionAmount} : <strong> {item.commssion_percentage}</strong></p>
                     </div>
                 {/each}
             </div>

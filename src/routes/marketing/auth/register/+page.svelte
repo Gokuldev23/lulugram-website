@@ -66,7 +66,8 @@
 
     const closeAlert = () => errorSubmit = ""
 
-    const handleRegisterAgent = async () => {
+    const handleRegisterAgent = async (e) => {
+        e.preventDefault();
 
         let { agentName , agentMobile , agentPassword ,countryCode ,address ,tcAgreed } = form
 

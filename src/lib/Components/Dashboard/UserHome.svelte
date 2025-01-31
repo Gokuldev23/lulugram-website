@@ -3,7 +3,7 @@
     import UserProfile from "./UserProfile.svelte";
     import UserNavbar from "./UserNavbar.svelte";
     import Settings from "./Settings.svelte";
-    import Profile from "./Profile.svelte";
+    import Verification from "./Verification.svelte";
 
     import { writable } from 'svelte/store';
 
@@ -16,8 +16,8 @@
     {#if $activePage === "home"}
         <UserProfile />
         <UserNavbar />
-    {:else if $activePage === "profile"}
-        <Profile />
+    {:else if $activePage === "verification"}
+        <Verification />
     {:else if $activePage === "settings"}
         <Settings />
     {/if}

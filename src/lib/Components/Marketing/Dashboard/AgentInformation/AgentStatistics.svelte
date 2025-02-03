@@ -4,8 +4,8 @@
 	import { agentStore } from "$lib/stores/marketing/agentStore";
 	import { getUsersCountForEachProduct } from "$lib/js/marketing/api/agentDashborad";
 
-	import Loading from "../common/Loading.svelte";
-	import AlertModal from "../common/AlertModal.svelte";
+	import Loading from "../../../common/Loading.svelte";
+	import AlertModal from "../../../common/AlertModal.svelte";
 
 
     let t_agent_statistics = "Agent Statistics";

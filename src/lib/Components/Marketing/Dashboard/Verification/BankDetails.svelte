@@ -1,8 +1,8 @@
 <script>
     import { agentStore } from "$lib/stores/marketing/agentStore";
-    import { bankVerify, getBankDetails } from "$lib/Components/JS/bankVerification";
+    import { bankVerify, getBankDetails } from "$lib/js/marketing/api/bankVerification";
 
-    import DisplayBankDetail from "../DisplayBankDetail.svelte";
+    import DisplayBankDetail from "./DisplayBankDetail.svelte";
 
     $: a_token = $agentStore.a_token;   
 

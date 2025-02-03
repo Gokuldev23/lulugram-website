@@ -1,7 +1,7 @@
 <script>
-	import CurrentPayInfo from "../marketing/Dashboard/CurrentPayInfo.svelte";
-    import GrossPayInfo from "../marketing/Dashboard/GrossPayInfo.svelte";
-	import PreviousPayInfo from "../marketing/Dashboard/PreviousPayInfo.svelte";
+    import CurrentPayInfo from "./CurrentPayInfo.svelte";
+    import GrossPayInfo from "./GrossPayInfo.svelte";
+    import PreviousPayInfo from "./PreviousPayInfo.svelte";
 
     let t_payment_information = "Payment Information";
 

@@ -5,9 +5,9 @@
 
     import EditFieldModal from './EditFieldModal.svelte';
     import ContactUs from './ContactUs.svelte';
-    import LogoutButton from '../Logout/Logout.svelte';
+    import LogoutButton from "../Logout/Logout.svelte"
     import LogoutModal from '../Logout/LogoutModal.svelte';
-    import UserProfile from '../UserProfile.svelte';
+    import AgentProfileHeader from '../AgentProfileHeader.svelte';
 
     $: agentName = $agentStore.agentName;
     $: city = $agentStore.address.city;
@@ -65,7 +65,7 @@
 </script>
 
 <main>
-    <UserProfile />
+    <AgentProfileHeader />
     
     <div class="p-4 md:p-8 bg-gray-100 min-h-screen flex flex-col items-center">
         {#if isEditModalOpen}

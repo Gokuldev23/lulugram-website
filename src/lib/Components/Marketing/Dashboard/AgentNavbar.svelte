@@ -1,9 +1,9 @@
 <script>
     import { writable } from 'svelte/store';
-    import AgentRefrerralDetails from './AgentRefrerralDetails.svelte';
-    import AgentStatistics from './AgentStatistics.svelte';
-    import AgentPaymentDetails from './AgentPaymentDetails.svelte';
-    import AgentDetails from './AgentDetails.svelte';
+    import AgentRefrerralDetails from './AgentInformation/AgentRefrerralDetails.svelte';
+    import AgentStatistics from './AgentInformation/AgentStatistics.svelte';
+    import AgentPaymentDetails from './AgentInformation/AgentPaymentDetails.svelte';
+    import AgentDetails from './AgentInformation/AgentDetails.svelte';
 
     export let currentPage = writable('Referrals');
 

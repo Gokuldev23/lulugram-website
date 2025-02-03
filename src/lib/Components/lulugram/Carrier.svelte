@@ -1,5 +1,5 @@
 <main class="max-w-6xl mx-auto md:py-20 py-10 px-4">
-    <h1 class="text-center text-4xl text-blue-600 uppercase font-semibold mb-10">Carrer</h1>
+    <h1 class="text-center text-4xl text-blue-600 uppercase font-semibold mb-10">Carrier</h1>
     <div class="grid md:grid-cols-[1fr_300px] gap-10 ">
         <div class="md:order-2">
             <img class="" src="/carrer.svg" alt="">

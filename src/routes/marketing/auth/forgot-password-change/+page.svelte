@@ -12,6 +12,7 @@
 	import PasswordInput from "$lib/Components/marketing/PasswordInput.svelte";
 	import FullLoading from "$lib/Components/common/FullLoading.svelte";
 	import SubmitButton from "$lib/Components/common/SubmitButton.svelte";
+	import FormTitle from "$lib/Components/marketing/FormTitle.svelte";
 
 
 

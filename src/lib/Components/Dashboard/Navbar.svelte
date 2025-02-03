@@ -26,7 +26,6 @@
     <div class="text-lg font-bold sm:text-xl md:text-2xl ">
         {t_dashboard}
     </div>
-    <div class="text-lg font-bold sm:text-xl md:text-2xl">{t_dashboard}</div>
     <ul class="flex gap-8">
         <li><a href="#" class="hover:underline text-sm sm:text-base" on:click={() => navigateTo('home')}>{t_home}</a></li>
         <li><a href="#" class="hover:underline text-sm sm:text-base" on:click={() => navigateTo('verification')}>{t_verification}</a></li>

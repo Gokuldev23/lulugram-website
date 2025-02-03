@@ -9,14 +9,14 @@
     <img class="md:max-w-sm max-w-xs mx-auto" src="/marketing/landing.svg" alt="">
     <ul class="text-center md:text-2xl/8 text-xl bg-gradient-to-r from-blue-200 to-violet-200 rounded-xl border py-4 space-y-3 font-bold text-orange-500  max-w-2xl  my-5 mx-auto ">
         <li>Join our Marketing Partner Program </li>
-        <li>Work Anywhere</li>
+        <li>Work from Anywhere</li>
         <li>No Investment</li>
         <li>Start earning hansdsome <strong class="text-violet-600 md:text-2xl text-xl"> Commission.</strong> </li>
     </ul>
 
     <p class="text-justify md:text-lg/8  max-w-2xl my-10 mx-auto">
         by referring our apps—Gramlok, 
-        Crossword, Vidhyavart, and more! For every user you refer who purchases a subscription, you’ll receive 
+        Crossword, Vidyavart, and more! For every user you refer who purchases a subscription, you’ll receive 
         <strong class="text-violet-600 text-xl"> Commission.</strong> 
         <strong>  No investment </strong>, no risk—just share and earn!
         <a href="/marketing/tnc" class="text-blue-500">For more Information , click here</a>

@@ -1,9 +1,8 @@
 <script>
 	import Icon from '@iconify/svelte';
 	import { goto } from '$app/navigation';
-    import { writable } from 'svelte/store';
+	import { activePage, sideBarOpen } from '$lib/stores/marketing/utilStore';
 
-    export let activePage = writable('home');
 
     let t_dashboard = "Dashboard";
     let t_home = "Home";
@@ -12,6 +11,10 @@
 
     function navigateTo(page) {
         activePage.set(page);
+    }
+
+    function toggleSideBar() {
+        $sideBarOpen = !$sideBarOpen 
     }
 
     const navigateToLulugram = () => {
@@ -26,11 +29,18 @@
     <div class="text-lg font-bold sm:text-xl md:text-2xl ">
         {t_dashboard}
     </div>
-    <ul class="flex gap-8">
+    <ul class="md:flex gap-8 hidden">
         <li><a href="#" class="hover:underline text-sm sm:text-base" on:click={() => navigateTo('home')}>{t_home}</a></li>
         <li><a href="#" class="hover:underline text-sm sm:text-base" on:click={() => navigateTo('verification')}>{t_verification}</a></li>
         <li><a href="#" class="hover:underline text-sm sm:text-base" on:click={() => navigateTo('profile')}>{t_profile}</a></li>
     </ul>
+    <button class="block md:hidden" on:click={toggleSideBar}>
+        {#if $sideBarOpen}
+            <Icon icon="mingcute:close-fill" width="24" height="24" />
+        {:else}
+            <Icon icon="lucide:menu" width="24" height="24" />
+        {/if}
+    </button>
 </nav>
 
 <style>

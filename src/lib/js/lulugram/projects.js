@@ -32,10 +32,10 @@ export let projects = [
 		devStage: 'Available'
 	},
 	{
-		title: 'Vidhyavart',
+		title: 'Vidyavart',
 		type:"Education",
 		description: `An innovative e-learning app built using React Native, designed to enhance the learning experience for students.
-                      Vidhyavart offers a seamless platform where users can join courses, learn interactively, ask questions, and practice concepts in real-time. 
+                      Vidyavart offers a seamless platform where users can join courses, learn interactively, ask questions, and practice concepts in real-time. 
                       Powered by AI, the app personalizes learning paths to suit individual needs and provides an engaging environment for students to grasp complex topics 
                       efficiently. Its intuitive design ensures accessibility across devices, fostering a culture of continuous learning.`,
 		logo: '/apps-logo/vidhyavartLogo.png',

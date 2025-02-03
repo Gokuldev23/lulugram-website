@@ -36,6 +36,7 @@
 		countryCode: "+91",
 		tcAgreed: false,
 		address: {
+            addressLine : '',
 			district: '',
 			city: '',
 			state: '',
@@ -125,7 +126,8 @@
 
             <PasswordInput bind:password={form.agentPassword} errPassword={formErrors.password}/>
 
-            <AddressForm bind:district={form.address.district} bind:city={form.address.city} bind:state={form.address.state} bind:pincode={form.address.pinCode}/>
+            <AddressForm  bind:addressLine={form.address.addressLine} bind:district={form.address.district} 
+                bind:city={form.address.city} bind:state={form.address.state} bind:pincode={form.address.pinCode}/>
 
             <TermsCheckbox bind:checked={form.tcAgreed} t_condition={t_tnc} link={'/marketing/tnc'}/>
 

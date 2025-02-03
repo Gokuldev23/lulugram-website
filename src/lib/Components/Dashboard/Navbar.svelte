@@ -22,7 +22,7 @@
     }
 </script>
 
-<nav class="bg-gray-800 text-white p-4 flex justify-between items-center">
+<nav class="bg-gray-800 text-white p-4 flex items-center flex-nowrap justify-between">
     <button class="flex items-center gap-2" on:click={navigateToLulugram}>
         <Icon icon="eva:arrow-back-outline" width="24" height="24" />
     </button>
@@ -43,11 +43,3 @@
     </button>
 </nav>
 
-<style>
-    @media (max-width: 350px) {
-        .flex {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-    }
-</style>

@@ -59,6 +59,7 @@ export const validateOTP = (otp) => {
 
 export const validateAddress = (address) => {
     return (
+        address.addressLine.trim() !== "" &&
         address.district.trim() !== "" &&
         address.city.trim() !== "" &&
         address.state.trim() !== "" &&

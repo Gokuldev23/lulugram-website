@@ -1,7 +1,7 @@
 <script>
     import Icon from '@iconify/svelte';
 
-    import { emailVerify, otpVerifyEmail } from '$lib/Components/JS/emailVerification';
+    import { emailVerify, otpVerifyEmail } from '$lib/js/marketing/api/emailVerification';
     import { agentStore } from '$lib/stores/marketing/agentStore';
     import { otpStore } from '$lib/stores/marketing/otpStore';
     import { getAgentStatus } from '$lib/js/marketing/api/auth';

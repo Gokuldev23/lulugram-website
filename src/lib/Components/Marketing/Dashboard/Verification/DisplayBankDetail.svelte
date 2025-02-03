@@ -1,5 +1,5 @@
 <script>
-    import { getBankDetails } from "../JS/bankVerification";
+    import { getBankDetails } from "$lib/js/marketing/api/bankVerification";
     import { agentStore } from "$lib/stores/marketing/agentStore";
 
     let bankDetails = {};

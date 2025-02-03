@@ -1,5 +1,5 @@
 <script>
-	import MarketingNavbar from '$lib/Components/marketing/MarketingNavbar.svelte';
+	import MarketingNavbar from '$lib/Components/Marketing/MarketingNavbar.svelte';
 
 
     let { children } = $props()

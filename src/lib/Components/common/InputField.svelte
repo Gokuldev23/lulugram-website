@@ -59,6 +59,7 @@
 		outline: 2px solid #7c3aed;
 	}
 	input.invalid {
+		outline: 1px solid red;
 		border: 1px solid red;
 	}
 
@@ -75,12 +76,17 @@
 		pointer-events: none;
 	}
 
+
 	input:focus + label,
 	input:not(:placeholder-shown) + label {
 		top: -3px;
 		left: 0.4rem;
 		font-size: 0.8rem;
 		color: #7c3aed;
+	}
+	input.invalid:focus + label,
+	input.invalid:not(:placeholder-shown) + label {
+		color: red;
 	}
 	input:disabled {
 		opacity: 0.7;

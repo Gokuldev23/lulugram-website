@@ -65,7 +65,7 @@
 
 </script>
   
-<main class="flex items-center h-[80vh]">
+<main class="flex items-center h-[80vh] p-4">
 
     {#if loading}
         <FullLoading/>

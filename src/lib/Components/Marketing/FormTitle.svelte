@@ -4,17 +4,15 @@
 
     let props = $props()
 
-    let { title = "Title" ,txtColor = "#334155" , hideBackBtn = false , onBack = goBack() } = $derived(props)
+    let { title = "Title" ,txtColor = "#334155" , hideBackBtn = false , onBack = () => history.back() } = $derived(props)
 
-    const goBack = () => {
-        history.back()
-    }
+
 </script>
 
 
 <div class="relative" style="color: {txtColor};">
     {#if !hideBackBtn}
-        <button  onclick={goBack} class="absolute left-4 top-1 {props.class}">
+        <button type="button"  onclick={onBack} class="absolute left-0 top-1 {props.class}">
             <Icon icon="eva:arrow-back-outline" width="24" height="24" />
         </button>
     {/if}

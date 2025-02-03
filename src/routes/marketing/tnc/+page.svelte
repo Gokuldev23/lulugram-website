@@ -1,6 +1,6 @@
 <script>
 	import Card from "$lib/Components/common/Card.svelte";
-	import FormTitle from "$lib/Components/marketing/FormTitle.svelte";
+	import FormTitle from "$lib/Components/Marketing/FormTitle.svelte";
 
 
 </script>

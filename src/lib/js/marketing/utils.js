@@ -11,7 +11,8 @@ export const validateName = (name) => {
     if(!name){
         return true
     }
-    return name.trim().length>3
+    
+    return name.trim().length>2 && /^[A-Za-z]{2}/.test(name)
 }
 
 

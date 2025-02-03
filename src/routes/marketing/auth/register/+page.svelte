@@ -53,7 +53,7 @@
 	});
 
     const formErrors = $derived({
-		name: validations.name ? null : "Name should be at least 3 characters",
+		name: validations.name ? null : "Name should be at least 3 characters (alphabets)",
 		password: validations.password ? null : "Password Should contains 1 Uppercase, 1 Lowercase , 1 Number and 1 Symbol",
 		mobile: validations.mobile ? null : "Invalid mobile number"
 	});

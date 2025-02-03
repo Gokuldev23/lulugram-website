@@ -42,7 +42,7 @@
     let t_login = "Login"
     
     
-    let isValidMobile = $derived(validateMobileNumber(userId))
+    let isValidMobile = $derived(validateMobileNumber(form.agentMobile))
 
 
     const handleForgotPass = async (e) => {

@@ -1,14 +1,13 @@
 <script>
+    import { activePage } from "$lib/stores/marketing/utilStore";
+    
     import Navbar from "./Navbar.svelte";
     import UserProfile from "./UserProfile.svelte";
     import UserNavbar from "./UserNavbar.svelte";
     import Profile from "./Profile/Profile.svelte";
     import Verification from "./Verification/Verification.svelte";
 
-    import { writable } from 'svelte/store';
-
-    // Reactive variable to manage the active page
-    let activePage = writable('home');
+ 
 </script>
 
 <main class="bg-gray-100 min-h-screen">

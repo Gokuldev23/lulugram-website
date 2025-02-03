@@ -13,5 +13,4 @@
     <div id="slot" class="">
         {@render children()}
     </div>
-    <Footer/>
 </main>

@@ -83,7 +83,7 @@
 
             <PasswordInput label={t_new_password} bind:password={form.newPassword} errPassword={formErrors.newPassword}/>
 
-            <a class="my-4 block text-sm ml-1" href="/auth/forgotPassword">{t_forgotPass}</a>
+            <a class="my-4 block text-sm ml-1" href="/marketing/auth/forgot-password">{t_forgotPass}</a>
 
             <SubmitButton disabled={!formValid}/>
         </form>

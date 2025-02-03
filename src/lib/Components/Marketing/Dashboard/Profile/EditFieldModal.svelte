@@ -9,8 +9,9 @@
 
     let t_editInformation = "Edit Information";
     let t_agentName = "Name : ";
+    let t_address = "Address : "
     let t_city = "City : ";
-    let t_district = "District : "; 
+    let t_district = "District : ";
     let t_state = "State : ";
     let t_pinCode = "Pin Code : ";
     let t_cancel = "Cancel";
@@ -19,6 +20,7 @@
     let newFields = {
         agentName: fields.agentName || '',
         address: {
+            addressLine: fields.addressLine || '',
             city: fields.city || '',
             district: fields.district || '',
             state: fields.state || '',
@@ -28,6 +30,7 @@
 
     let errors = {
         agentName: '',
+        addressLine: '',
         city: '',
         district: '',
         state: '',
@@ -42,6 +45,13 @@
                 errors.pinCode = 'Pin Code must be exactly 6 digits';
             } else {
                 errors.pinCode = '';
+            }
+        } else if (field === 'city' || field === 'district') {
+            // Skip validation for city and district if they are empty
+            if (value && !/^[A-Za-z]{2,}/.test(value)) {
+                errors[field] = 'Must be at least 2 characters and start with alphabets';
+            } else {
+                errors[field] = '';
             }
         } else {
             if (!/^[A-Za-z]{2,}/.test(value)) {
@@ -78,15 +88,15 @@
     $: isChanged = JSON.stringify(newFields) !== JSON.stringify(fields);
 
     $: validateField('agentName', newFields.agentName);
+    $: validateField('addressLine', newFields.address.addressLine);
     $: validateField('city', newFields.address.city);
     $: validateField('district', newFields.address.district);
     $: validateField('state', newFields.address.state);
     $: validateField('pinCode', newFields.address.pinCode);
 
     $: isFormValid = () => {
-        return !errors.agentName && !errors.city && !errors.district && !errors.state && !errors.pinCode;
+        return !errors.agentName && !errors.addressLine && !errors.city && !errors.district && !errors.state && !errors.pinCode;
     };
-
 </script>
 
 <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10 p-4">
@@ -102,6 +112,18 @@
             />
             {#if errors.agentName}
                 <p class="text-red-500 text-sm mt-1">{errors.agentName}</p>
+            {/if}
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-600 text-sm font-medium mb-2">{t_address}</label>
+            <input
+                type="text"
+                bind:value={newFields.address.addressLine}
+                class="w-full p-2 border border-gray-300 rounded-lg"
+                placeholder="Enter Address"
+            />
+            {#if errors.addressLine}
+                <p class="text-red-500 text-sm mt-1">{errors.addressLine}</p>
             {/if}
         </div>
         <div class="mb-4">

@@ -10,6 +10,7 @@
     import AgentProfileHeader from '../AgentProfileHeader.svelte';
 
     $: agentName = $agentStore.agentName;
+    $: addressLine = $agentStore.address.addressLine
     $: city = $agentStore.address.city;
     $: district = $agentStore.address.district;
     $: state = $agentStore.address.state;
@@ -23,6 +24,7 @@
 
     let t_agentInformation = "Agent Information";
     let t_agentName = "Name : ";
+    let t_address = "Address : "
     let t_city = "City : ";
     let t_district = "District : ";
     let t_state = "State : ";
@@ -70,7 +72,7 @@
     <div class="p-4 md:p-8 bg-gray-100 min-h-screen flex flex-col items-center">
         {#if isEditModalOpen}
             <EditFieldModal
-                fields={{ agentName, city, district, state, pinCode }}
+                fields={{ agentName, addressLine, city, district, state, pinCode }}
                 on:close={handleCloseModal}
                 on:save={saveChanges}
             />
@@ -82,47 +84,51 @@
     
     
         <div class="w-full max-w-xs bg-white p-6 md:p-8 rounded-lg shadow-lg mb-8 relative">
-            <h2 class="text-2xl md:text-3xl mb-6 text-gray-800 font-bold border-b border-gray-300 pb-2">{t_agentInformation}</h2>
-            <button
-                class="absolute top-5 right-4 px-4 py-2 bg-blue-500 text-white rounded-lg transition-colors duration-300 hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 flex items-center gap-2"
-                on:click={openEditModal}
-            >
+            <h2 class="text-xl md:text-3xl mb-6 text-gray-800 font-bold border-b border-gray-300 pb-2">{t_agentInformation}</h2>
+                <button
+                    class="absolute top-5 right-4 px-4 py-2 bg-blue-500 text-white rounded-lg transition-colors duration-300 hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 flex items-center"
+                    on:click={openEditModal}
+                >
                 <Icon icon="mdi:pencil" class="w-5 h-5" /> <!-- Edit Icon -->
             </button>
             <div class="space-y-4">
-                <div class="flex justify-between items-center bg-gray-50 p-2 rounded-lg shadow-sm transition-colors duration-300 hover:bg-gray-100">
-                    <span class="text-gray-600 text-sm font-medium">{t_agentName}</span>
-                    <span class="text-gray-800 font-800"><strong>{agentName}</strong></span>
+                <div class="flex justify-between items-center bg-gray-50 p-2 rounded-lg shadow-sm transition-colors duration-300 hover:bg-gray-100 gap-2">
+                    <span class="text-gray-600 text-sm font-medium no-break">{t_agentName}</span>
+                    <span class="text-gray-800 font-800 custom-break"><strong>{agentName}</strong></span>
                 </div>
-                <div class="flex justify-between items-center bg-gray-50 p-2 rounded-lg shadow-sm transition-colors duration-300 hover:bg-gray-100">
-                    <span class="text-gray-600 text-sm font-medium">{t_city}</span>
-                    <span class="text-gray-800 font-800"><strong>{city}</strong></span>
+                <div class="flex justify-between items-center bg-gray-50 p-2 rounded-lg shadow-sm transition-colors duration-300 hover:bg-gray-100 gap-2">
+                    <span class="text-gray-600 text-sm font-medium no-break">{t_address}</span>
+                    <span class="text-gray-800 font-800 custom-break"><strong>{addressLine}</strong></span>
                 </div>
-                <div class="flex justify-between items-center bg-gray-50 p-2 rounded-lg shadow-sm transition-colors duration-300 hover:bg-gray-100">
-                    <span class="text-gray-600 text-sm font-medium">{t_district}</span>
-                    <span class="text-gray-800 font-800"><strong>{district}</strong></span>
+                <div class="flex justify-between items-center bg-gray-50 p-2 rounded-lg shadow-sm transition-colors duration-300 hover:bg-gray-100 gap-2">
+                    <span class="text-gray-600 text-sm font-medium no-break">{t_city}</span>
+                    <span class="text-gray-800 font-800 custom-break"><strong>{city}</strong></span>
                 </div>
-                <div class="flex justify-between items-center bg-gray-50 p-2 rounded-lg shadow-sm transition-colors duration-300 hover:bg-gray-100">
-                    <span class="text-gray-600 text-sm font-medium">{t_state}</span>
-                    <span class="text-gray-800 font-800"><strong>{state}</strong></span>
+                <div class="flex justify-between items-center bg-gray-50 p-2 rounded-lg shadow-sm transition-colors duration-300 hover:bg-gray-100 gap-2">
+                    <span class="text-gray-600 text-sm font-medium no-break">{t_district}</span>
+                    <span class="text-gray-800 font-800 custom-break"><strong>{district}</strong></span>
                 </div>
-                <div class="flex justify-between items-center bg-gray-50 p-2 rounded-lg shadow-sm transition-colors duration-300 hover:bg-gray-100">
-                    <span class="text-gray-600 text-sm font-medium">{t_pinCode}</span>
-                    <span class="text-gray-800 font-800"><strong>{pinCode}</strong></span>
+                <div class="flex justify-between items-center bg-gray-50 p-2 rounded-lg shadow-sm transition-colors duration-300 hover:bg-gray-100 gap-2">
+                    <span class="text-gray-600 text-sm font-medium no-break">{t_state}</span>
+                    <span class="text-gray-800 font-800 custom-break"><strong>{state}</strong></span>
                 </div>
-                <div class="flex justify-between items-center bg-gray-50 p-2 rounded-lg shadow-sm transition-colors duration-300 hover:bg-gray-100">
-                    <span class="text-gray-600 text-sm font-medium">{t_mobileNumber}</span>
-                    <span class="text-gray-800 font-800"><strong>{mobileNumber}</strong></span>
+                <div class="flex justify-between items-center bg-gray-50 p-2 rounded-lg shadow-sm transition-colors duration-300 hover:bg-gray-100 gap-2">
+                    <span class="text-gray-600 text-sm font-medium no-break">{t_pinCode}</span>
+                    <span class="text-gray-800 font-800 custom-break"><strong>{pinCode}</strong></span>
+                </div>
+                <div class="flex justify-between items-center bg-gray-50 p-2 rounded-lg shadow-sm transition-colors duration-300 hover:bg-gray-100 gap-2">
+                    <span class="text-gray-600 text-sm font-medium no-break">{t_mobileNumber}</span>
+                    <span class="text-gray-800 font-800 custom-break"><strong>{mobileNumber}</strong></span>
                 </div>
                 {#if !isEmailVerified}
-                    <div class="flex justify-between items-center bg-gray-50 p-2 rounded-lg shadow-sm transition-colors duration-300 hover:bg-gray-100">
-                        <span class="text-gray-600 text-sm font-medium">{t_email}</span>
-                        <span class="text-gray-800 font-700 flex gap-3">{t_emailNotVerified}<Icon icon="fa:times-circle" class="text-red-500 mt-1" /></span>
+                    <div class="flex justify-between items-center bg-gray-50 p-2 rounded-lg shadow-sm transition-colors duration-300 hover:bg-gray-100 gap-2">
+                        <span class="text-gray-600 text-sm font-medium no-break">{t_email}</span>
+                        <span class="text-gray-800 font-700 flex gap-3 custom-break">{t_emailNotVerified}<Icon icon="fa:times-circle" class="text-red-500 mt-1" /></span>
                     </div>
                 {:else}
-                    <div class="flex justify-between items-center bg-gray-50 p-2 rounded-lg shadow-sm transition-colors duration-300 hover:bg-gray-100">
-                        <span class="text-gray-600 text-sm font-medium">{t_email}</span>
-                        <span class="text-gray-800 font-semibold flex gap-3"><strong>{email}</strong><Icon icon="fa:check-circle" class="text-green-500 mt-1" /></span>
+                    <div class="flex justify-between items-center bg-gray-50 p-2 rounded-lg shadow-sm transition-colors duration-300 hover:bg-gray-100 gap-2">
+                        <span class="text-gray-600 text-sm font-medium no-break">{t_email}</span>
+                        <span class="text-gray-800 font-semibold flex gap-3 custom-break"><strong>{email}</strong><Icon icon="fa:check-circle" class="text-green-500 mt-1" /></span>
                     </div>
                 {/if}
             </div>
@@ -146,5 +152,14 @@
     }
     .max-w-xs {
         max-width: 600px;
+    }
+    @media (max-width: 499px) {
+        .custom-break {
+            white-space: pre-line;
+            text-align: right;
+        }
+        .no-break {
+            white-space: nowrap;
+        }
     }
 </style>

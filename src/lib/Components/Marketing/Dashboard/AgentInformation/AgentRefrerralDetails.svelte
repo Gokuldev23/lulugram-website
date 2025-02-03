@@ -5,8 +5,8 @@
 	import { getReferralsDetails } from '$lib/js/marketing/api/agentDashborad';
 	import { agentStore } from '$lib/stores/marketing/agentStore';
 
-	import Loading from '../common/Loading.svelte';
-	import AlertModal from '../common/AlertModal.svelte';
+	import Loading from '../../../common/Loading.svelte';
+	import AlertModal from '../../../common/AlertModal.svelte';
 
 
     

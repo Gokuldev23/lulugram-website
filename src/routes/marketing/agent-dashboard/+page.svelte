@@ -1,9 +1,7 @@
 <script>
-    import UserHome from "$lib/Components/Dashboard/UserHome.svelte";
-
-   
+    import AgentHome from "$lib/Components/Marketing/Dashboard/AgentHome.svelte";
 </script>
 
 <main>
-    <UserHome />
+    <AgentHome />
 </main>

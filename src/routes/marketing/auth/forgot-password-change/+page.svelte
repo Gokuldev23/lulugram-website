@@ -9,10 +9,10 @@
 	import Card from "$lib/Components/common/Card.svelte";
 	import AlertModal from "$lib/Components/common/AlertModal.svelte";
 	import InputField from "$lib/Components/common/InputField.svelte";
-	import PasswordInput from "$lib/Components/marketing/PasswordInput.svelte";
+	import PasswordInput from "$lib/Components/Marketing/PasswordInput.svelte";
 	import FullLoading from "$lib/Components/common/FullLoading.svelte";
 	import SubmitButton from "$lib/Components/common/SubmitButton.svelte";
-	import FormTitle from "$lib/Components/marketing/FormTitle.svelte";
+	import FormTitle from "$lib/Components/Marketing/FormTitle.svelte";
 
 
 

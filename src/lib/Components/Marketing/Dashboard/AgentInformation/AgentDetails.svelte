@@ -1,6 +1,6 @@
 <script>
 	import { agentStore } from "$lib/stores/marketing/agentStore";
-    import { getBankDetails } from "../JS/bankVerification";
+    import { getBankDetails } from "$lib/js/marketing/api/bankVerification";
 
     let t_agent_details = "Agent Details";
     let t_mobile_number = "Mobile Number : ";

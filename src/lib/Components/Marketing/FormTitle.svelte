@@ -2,7 +2,9 @@
 	import Icon from "@iconify/svelte";
 
 
-    let { title = "Title" , disableBackBtn = false  } = $props()
+    let props = $props()
+
+    let { title = "Title" ,txtColor = "#334155" , hideBackBtn = false , onBack = goBack() } = $derived(props)
 
     const goBack = () => {
         history.back()
@@ -10,11 +12,11 @@
 </script>
 
 
-<div class="relative">
-    {#if !disableBackBtn}
-        <button  onclick={goBack} class="absolute left-4 top-1">
+<div class="relative" style="color: {txtColor};">
+    {#if !hideBackBtn}
+        <button  onclick={goBack} class="absolute left-4 top-1 {props.class}">
             <Icon icon="eva:arrow-back-outline" width="24" height="24" />
         </button>
     {/if}
-     <h1 class="text-center md:text-3xl text-2xl  uppercase text-slate-700 font-bold mb-6">{title}</h1>
+     <h1 class="text-center md:text-3xl text-2xl  uppercase  font-bold mb-6 {props.class}">{title}</h1>
 </div>

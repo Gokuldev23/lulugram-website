@@ -20,7 +20,7 @@
 </script>
 
 <nav class="bg-gray-800 p-2 shadow-md">
-    <ul class="flex flex-wrap justify-between w-full">
+    <ul class="md:flex flex-wrap grid grid-cols-2  justify-between w-full">
         <li class="flex-1">
             <button
                 on:click={() => navigateTo('Referrals')}

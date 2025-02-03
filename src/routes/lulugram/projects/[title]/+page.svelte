@@ -2,6 +2,7 @@
 	import Icon from "@iconify/svelte";
 	import { page } from "$app/stores";
     import { projects } from "$lib/js/lulugram/projects";
+	import FormTitle from "$lib/Components/Marketing/FormTitle.svelte";
 
     let title = $derived($page.params.title)
     let project = $derived(projects.find(p => p.title === title))
@@ -10,7 +11,7 @@
 
 
 <main class="max-w-6xl mx-auto md:py-20 py-10 px-4">
-    <h1 class="text-center md:text-4xl text-3xl my-6 font-bold text-blue-600">{project.title}</h1>
+    <FormTitle title={title} class="text-blue-500" />
     <img class="rounded-xl md:size-32 size-28 mx-auto my-4 mb-8 border border-slate-600 shadow-lg shadow-black" src="{project.logo}" alt="">
     <p class="text-center italic font-bold my-4 md:text-2xl text-lg text-orange-600">{project.tagLine}</p>
     <p class="md:text-base/8 text-sm/6 text-justify">{project.description}</p>

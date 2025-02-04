@@ -6,7 +6,7 @@
 	import { agentStore } from "$lib/stores/marketing/agentStore";
 
 	import { agentTempRegister } from "$lib/js/marketing/api/auth";
-	import { checkFields, validateAddress, validateMobileNumber, validateName, validatePassword } from "$lib/js/marketing/utils";
+	import { validateAddress, validateMobileNumber, validateName, validatePassword } from "$lib/js/marketing/utils";
 
     import Card from "$lib/Components/common/Card.svelte";
 	import FormTitle from "$lib/Components/Marketing/FormTitle.svelte";
@@ -53,7 +53,7 @@
 	});
 
     const formErrors = $derived({
-		name: validations.name ? null : "Name should be at least 3 characters",
+		name: validations.name ? null : "Name should be at least 3 characters (alphabets)",
 		password: validations.password ? null : "Password Should contains 1 Uppercase, 1 Lowercase , 1 Number and 1 Symbol",
 		mobile: validations.mobile ? null : "Invalid mobile number"
 	});

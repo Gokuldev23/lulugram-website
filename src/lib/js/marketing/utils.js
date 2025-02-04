@@ -11,7 +11,8 @@ export const validateName = (name) => {
     if(!name){
         return true
     }
-    return name.trim().length>3
+    
+    return name.trim().length>2 && /^[A-Za-z]{2}/.test(name)
 }
 
 
@@ -19,22 +20,16 @@ export function validatePassword(password) {
     if(password == ''){
         return true
     }
-    // Minimum 8 characters
     const hasMinLength = password.length >= 8;
     
-    // At least one uppercase letter
     const hasUpperCase = /[A-Z]/.test(password);
     
-    // At least one lowercase letter
     const hasLowerCase = /[a-z]/.test(password);
     
-    // At least one number
     const hasNumber = /\d/.test(password);
     
-    // At least one special character (symbol)
     const hasSpecialChar = /[!@#$%^&*()_+\-=\\[\]{};':"\\|,.<>\\/?]/.test(password);
     
-    // Check all conditions
     const isValid = hasMinLength && hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar;
     
     return isValid
@@ -57,24 +52,24 @@ export const validateOTP = (otp) => {
     return regex.test(otp);
 }
 
-export const validateAddress = (address) => {
-    return (
-        address.addressLine.trim() !== "" &&
-        address.district.trim() !== "" &&
-        address.city.trim() !== "" &&
-        address.state.trim() !== "" &&
-        address.pincode !== null &&
-        String(address.pincode).trim() !== ""
-    );
+export const validateAddressLine = (addressLine) => {
+    if(!addressLine.trim()){
+        return true
+    }
+    return addressLine.trim().length > 10
 }
 
+export const validateSixDigitNo = (value) => {
+    if(value == null){
+        return true
+    }
+    const regex = /^\d{6}$/;
+    return regex.test(value);
+}
 
-export const checkFields = (name,mobile,password,address) => {
-
-    const areBasicFieldsFilled = name?.trim() && mobile?.toString().trim() && password?.trim();
-
-    const isAddressValid = validateAddress(address)
-
-    return !!(areBasicFieldsFilled && isAddressValid)
-
+export const validateAddress = (address) => {
+    return (
+        validateAddressLine(address.addressLine) &&
+        address.state.trim() !== "" && validateSixDigitNo(address.pinCode)
+    );
 }

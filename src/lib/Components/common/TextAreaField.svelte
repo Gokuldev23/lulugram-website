@@ -14,9 +14,8 @@
 </script>
 
 <div class="form-group">
-	<input
+	<textarea
 		class:invalid={errorMsg}
-		{type}
 		{disabled}
 		bind:value
 		placeholder=""
@@ -24,7 +23,7 @@
 		oninput={handleDispatch}
 		autocomplete="off"
 		required={required}
-	/>
+	></textarea>
 	<label for={label}>{label}</label>
 	{#if errorMsg}
 		<small transition:slide>{errorMsg}</small>
@@ -42,7 +41,7 @@
 		font-size: 12px;
 		color: red;
 	}
-	input {
+	textarea {
 		padding: 8px;
 		border: 1px solid #ccc;
 		border-radius: 4px;
@@ -52,13 +51,14 @@
 		background-color: white;
 		width: 100%;
 		box-sizing: border-box;
+        resize: none;
 	}
 
-	input:focus {
+	textarea:focus {
 		border-color: #7c3aed;
 		outline: 2px solid #7c3aed;
 	}
-	input.invalid {
+	textarea.invalid {
 		outline: 1px solid red;
 		border: 1px solid red;
 	}
@@ -77,29 +77,29 @@
 	}
 
 
-	input:focus + label,
-	input:not(:placeholder-shown) + label {
+	textarea:focus + label,
+	textarea:not(:placeholder-shown) + label {
 		top: -3px;
 		left: 0.4rem;
 		font-size: 0.8rem;
 		color: #7c3aed;
 	}
-	input.invalid:focus + label,
-	input.invalid:not(:placeholder-shown) + label {
+	textarea.invalid:focus + label,
+	textarea.invalid:not(:placeholder-shown) + label {
 		color: red;
 	}
-	input:disabled {
+	textarea:disabled {
 		opacity: 0.7;
 	}
 
-	input::-webkit-outer-spin-button,
-	input::-webkit-inner-spin-button {
+	textarea::-webkit-outer-spin-button,
+	textarea::-webkit-inner-spin-button {
 		-webkit-appearance: none;
 		margin: 0;
 	}
 
 	/* Firefox */
-	input[type='number'] {
+	textarea[type='number'] {
 		-moz-appearance: textfield;
 	}
 </style>

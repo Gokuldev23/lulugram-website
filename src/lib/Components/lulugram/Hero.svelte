@@ -24,11 +24,8 @@
          </h1>
     </div>
 
-    <p class="text-justify max-w-6xl mx-auto text-sm md:text-base">
-        At Lulugram, we are dedicated to Innovations. With a passion for Software field, we strive to Modernization. Since our founding in 2022,
-        we have been committed to delivering excellent service that exceeds expectations and adds value to our clients' lives.Customer satisfaction
-        is at the heart of everything we do. We work closely with our clients to understand their needs. Thank you for considering Lulugram as your 
-        growing partner. We look forward to the opportunity to collaborate with you and create a brighter future together.
+    <p class="md:text-lg/10 text-base/6 font-medium tracking-wider  md:text-left text-justify">
+        At Lulugram Technologies, we are dedicated to innovation in software. We drive modernization and excellence, leveraging cutting-edge technologies like AI to deliver top-notch digital products. Since our founding in 2022, we have been committed to delivering excellent service that exceeds expectations and adds value to our clients' lives. Customer satisfaction is at the heart of everything we do. We work closely with our clients to understand their needs. Thank you for considering Lulugram as your growth partner. We look forward to collaborating and creating a brighter future together.
     </p>
 </section>
 

@@ -1,6 +1,7 @@
 <script>
     import { agentStore } from "$lib/stores/marketing/agentStore";
-    import { bankVerify, getBankDetails } from "$lib/js/marketing/api/bankVerification";
+    import { otpStore } from "$lib/stores/marketing/otpStore";
+    import { bankVerify, getBankDetails, otpVerifyBankDetails } from "$lib/js/marketing/api/bankVerification";
 
     import DisplayBankDetail from "./DisplayBankDetail.svelte";
 
@@ -23,10 +24,26 @@
     let isBankAdded = false
     let showBankDetailsAddedMessage = false;
 
+    const otpVerification = async() => {
+        let result = await otpVerifyBankDetails(a_token)
+        if(result.success){
+            isOtpSent = true
+            otpToken = result.otpToken
+
+            otpStore.set({
+                otpToken
+            });
+        } else {
+            isOtpSent = false
+            console.log("Error sending OTP");
+        }
+    }
+
     const getDetailsOfBank = async(a_token) => {
         let result = await getBankDetails(a_token);
+        let dataLength = result.data.length
 
-        if(result.success){
+        if(result.success && dataLength > 0){
             let data = result.data[0];
             status = data.status;
 
@@ -36,7 +53,7 @@
                 isBankAdded = false;
             }
         } else {
-            // console.log("Error fetching bank details");
+            console.log("Error fetching bank details");
         }
     }
 
@@ -48,7 +65,7 @@
     let accountHolderNameTouched = false;
     let ifscCodeTouched = false;
 
-    let t_bankAdded = "Bank details added successfully!";
+    let t_bankAdded = "Bank details verified successfully!";
     let t_bank_details = "Bank Details";
     let t_account_holder_name = "Account Holder Name";
     let t_account_number = "Account Number";
@@ -57,6 +74,15 @@
     let t_branch_name = "Branch Name";  
     let t_bank_name = "Bank Name";
     let t_submit = "Submit";
+    let t_get_otp = "Get OTP";
+    let t_submit_otp = "Submit OTP";
+    let t_otp_sent = "OTP sent to your Mobile number.";
+    let t_enter_otp = "Enter OTP"
+
+    let otp = "";
+    let otpToken = ""
+    let isOtpSent = false;
+    let errorMessage = ""
 
     // Validate Account Number
     function validateAccountNumber() {
@@ -171,12 +197,14 @@
     // Submit Form
     const submitForm = async() => {
 
-        let result = await bankVerify(a_token, accountHolderName, accountNumber, ifscCode, branchName, bankName);
+        let result = await bankVerify(a_token, accountHolderName, accountNumber, ifscCode, branchName, bankName, otp, otpToken);
         // console.log(result);
 
         if(result.success){
             isBankAdded = true;
+            errorMessage = ""
         } else {
+            errorMessage = result.message
             console.log("Error adding bank details");
         }
     }
@@ -186,6 +214,12 @@
         branchName = "";
         bankName = "";
         branchDetailsFetched = false;
+    }
+
+    // Function to allow only numeric input in the OTP field
+    function allowOnlyNumbers(event) {
+        const input = event.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+        otp = input.slice(0, 6); // Limit to 6 digits
     }
 
 </script>
@@ -277,16 +311,49 @@
             </div>
         {/if}
 
-        <!-- Submit Button -->
-        <div class="flex justify-center items-center">
-            <button
-                on:click={submitForm}
-                class="bg-blue-500 text-white px-4 py-2 rounded text-sm md:text-base hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
-                disabled={!isFormValid()}
-            >
-                {t_submit}
-            </button>
+        <!-- OTP Input Field (Visible after OTP is sent) -->
+        {#if isOtpSent}
+            <p class="text-green-500 text-xs md:text-sm mt-1 text-center mb-4">{t_otp_sent}</p>
+            <div class="mb-3 md:mb-4 flex justify-center items-center">
+                <input type="text" bind:value={otp} placeholder={t_enter_otp} maxlength="6" on:input={allowOnlyNumbers}
+                    class="w-full p-1.5 md:p-2 border border-gray-300 rounded max-w-[300px] md:max-w-[400px] text-sm md:text-base text-center"
+                />
+            </div>
+<!-- 
+            Submit Button
+            <div class="flex justify-center items-center">
+                <button
+                    on:click={submitForm}
+                    class="bg-blue-500 text-white px-4 py-2 rounded text-sm md:text-base hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    disabled={!isFormValid()}
+                >
+                    {t_submit}
+                </button>
+            </div> -->
+        {/if}
+
+        {#if errorMessage}
+            <p class="text-red-500 text-xs md:text-sm mt-1 text-center mb-4">{errorMessage}</p>
+        {/if}
+
+        <!-- Get OTP or Submit OTP Button -->
+        <div class="flex justify-center items-center mb-3 md:mb-4">
+            {#if !isOtpSent}
+                <button on:click={otpVerification} disabled={!isFormValid()}
+                    class="bg-blue-500 text-white px-3 py-1.5 md:px-4 md:py-2 rounded text-sm md:text-base hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                >
+                    {t_get_otp}
+                </button>
+            {:else}
+                <button on:click={submitForm} disabled={otp.length !== 6}
+                    class="bg-blue-500 text-white px-3 py-1.5 md:px-4 md:py-2 rounded text-sm md:text-base hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                >
+                    {t_submit}
+                </button>
+            {/if}
         </div>
+
+        
     </div>
     {:else}
         <DisplayBankDetail/>

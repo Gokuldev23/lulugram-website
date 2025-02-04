@@ -22,6 +22,7 @@
     $: agentAddress = $agentStore.address
     $: aadharVerified = $agentStore.aadharVerified ? "Verified" : "Not Verified"
     
+    $: addressLine = agentAddress?.addressLine
     $: district = agentAddress?.district
     $: city = agentAddress?.city
     $: state = agentAddress?.state
@@ -55,34 +56,21 @@
     <h1 class="text-3xl md:text-4xl mb-8 text-gray-900 font-extrabold text-center">{t_agent_details}</h1>
     <div class="w-full max-w-4xl bg-white p-6 md:p-8 rounded-xl shadow-2xl">
         <!-- Mobile Number -->
-        <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg mb-4">
-            <span class="text-gray-600 text-sm font-medium">{t_mobile_number} </span>
-            <span class="text-gray-800 font-semibold">{mobileNumber}</span>
+        <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg mb-4 gap-2">
+            <span class="text-gray-600 text-sm font-medium no-break">{t_mobile_number} </span>
+            <span class="text-gray-800 font-semibold custom-break">{mobileNumber}</span>
         </div>
 
         <!-- Email -->
-        <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg mb-4">
-            <span class="text-gray-600 text-sm font-medium">{t_email}</span>
-            <span class="text-gray-800 font-semibold">{email}</span>
-        </div>
-
-        
-        <!-- Address -->
-        <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg mb-4">
-            <span class="text-gray-600 text-sm font-medium">{t_address}</span>
-            <span class="text-gray-800 font-semibold text-right">{district} , {city} , {state}</span>
-        </div>
-        
-        <!-- Pin -->
-        <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg mb-4">
-            <span class="text-gray-600 text-sm font-medium">{t_pin}</span>
-            <span class="text-gray-800 font-semibold text-right">{pincode}</span>
+        <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg mb-4 gap-2">
+            <span class="text-gray-600 text-sm font-medium no-break">{t_email}</span>
+            <span class="text-gray-800 font-semibold custom-break">{email}</span>
         </div>
 
         <!-- Aadhar Details -->
-        <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg mb-4">
-            <span class="text-gray-600 text-sm font-medium">{t_aadhar_verified} </span>
-            <span class="text-gray-800 font-semibold">{aadharVerified}</span>
+        <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg mb-4 gap-2">
+            <span class="text-gray-600 text-sm font-medium no-break">{t_aadhar_verified} </span>
+            <span class="text-gray-800 font-semibold custom-break">{aadharVerified}</span>
         </div>
 
         {#if bankAddedStatus}
@@ -90,29 +78,41 @@
             <h2 class="text-2xl md:text-3xl mb-6 text-gray-800 font-bold border-b border-gray-200 pb-3 mt-8 text-center">{t_bank_details}</h2>
             <div class="space-y-4">
                 <!-- Bank Name -->
-                <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
-                    <span class="text-gray-600 text-sm font-medium">{t_bank_name} </span>
-                    <span class="text-gray-800 font-semibold">{bankName}</span>
+                <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg gap-2">
+                    <span class="text-gray-600 text-sm font-medium no-break">{t_bank_name} </span>
+                    <span class="text-gray-800 font-semibold custom-break">{bankName}</span>
                 </div>
 
                 <!-- Account Number -->
-                <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
-                    <span class="text-gray-600 text-sm font-medium">{t_account_number}</span>
-                    <span class="text-gray-800 font-semibold">{accountNumber}</span>
+                <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg gap-2">
+                    <span class="text-gray-600 text-sm font-medium no-break">{t_account_number}</span>
+                    <span class="text-gray-800 font-semibold custom-break">{accountNumber}</span>
                 </div>
 
                 <!-- IFSC Code -->
-                <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
-                    <span class="text-gray-600 text-sm font-medium">{t_ifsc_code}</span>
-                    <span class="text-gray-800 font-semibold">{ifscCode}</span>
+                <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg gap-2">
+                    <span class="text-gray-600 text-sm font-medium no-break">{t_ifsc_code}</span>
+                    <span class="text-gray-800 font-semibold custom-break">{ifscCode}</span>
                 </div>
 
                 <!-- Branch Name -->
-                <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
-                    <span class="text-gray-600 text-sm font-medium">{t_branch_name}</span>
-                    <span class="text-gray-800 font-semibold">{branchName}</span>
+                <div class="flex justify-between items-center bg-gray-50 p-4 rounded-lg gap-2">
+                    <span class="text-gray-600 text-sm font-medium no-break">{t_branch_name}</span>
+                    <span class="text-gray-800 font-semibold custom-break">{branchName}</span>
                 </div>
             </div>
         {/if}
     </div>
 </main>
+
+<style>
+    @media (max-width: 499px) {
+        .custom-break {
+            white-space: pre-line;
+            text-align: right;
+        }
+        .no-break {
+            white-space: nowrap;
+        }
+    }
+</style>

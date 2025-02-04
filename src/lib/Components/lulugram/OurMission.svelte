@@ -7,11 +7,7 @@
             <img class="" src="/vision.svg" alt="">
         </div>
         <p class="md:text-lg/10 text-base/6 font-medium tracking-wider  md:text-left text-justify">
-            Our vision is to develop leading edge software products for IT including AI and VR and Scientific Computing
-            for our inhouse platforms as well as for customers. We envision to launch multiple platforms for varied use
-            cases in future. Presently we are completely focussed to launch our social media platform 'GramLok' on 29th April,
-            2024. You can visit our website at https://gramlok.in . This social media platform is India specific and is being
-             designed and developed keeping in mind India's specific socio-economic structure.
+            Our vision at Lulugram Technologies is to pioneer state of the art software products. This includes leveraging AI and VR in IT, along with Scientific Computing, for both our in-house platforms and customer-facing solutions. We plan to roll out multiple platforms for diverse use cases in the future. So far, we've successfully launched <a href="https://gramlok.in" style="color: blue; text-decoration: none;" target="_blank">Gramlok</a>, a social media platform that celebrates Indian culture and values, and <a href="https://xcrossword.com" style="color: blue; text-decoration: none;" target="_blank">Pro Vocab Crossword</a>, designed to enhance advanced English vocabulary. Currently, we're in the final stages of launching Vidyavart, an AI powered e-learning platform.
         </p>
     </div>
 </main>

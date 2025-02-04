@@ -38,7 +38,7 @@
                 <div class="referral-container">
                     <p class="text-md md:text-base">{t_referral_number}</p>
                     <div class="flex items-center bg-gray-600 text-xl rounded-lg gap-x-2 px-4 py-2 text-white max-w-fit">
-                        <span class="text-sm md:text-base">{referralNumber}</span>
+                        <span class="text-sm md:text-base font-bold">{referralNumber}</span>
                         <button
                             on:click={coptToClipboard}
                             class="rounded-md hover:bg-gray-400 transition-colors focus:outline-none"

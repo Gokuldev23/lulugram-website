@@ -53,6 +53,12 @@
             } else {
                 errors[field] = '';
             }
+        } else if (field === 'addressLine') {
+            if (value.length < 10) {
+                errors.addressLine = 'Address Line must be at least 10 characters';
+            } else {
+                errors.addressLine = '';
+            }
         } else {
             if (!/^[A-Za-z]{2,}/.test(value)) {
                 errors[field] = 'Must be at least 2 characters and start with alphabets';

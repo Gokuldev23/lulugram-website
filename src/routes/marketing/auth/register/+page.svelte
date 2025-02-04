@@ -6,7 +6,7 @@
 	import { agentStore } from "$lib/stores/marketing/agentStore";
 
 	import { agentTempRegister } from "$lib/js/marketing/api/auth";
-	import { checkFields, validateAddress, validateMobileNumber, validateName, validatePassword } from "$lib/js/marketing/utils";
+	import { validateAddress, validateMobileNumber, validateName, validatePassword } from "$lib/js/marketing/utils";
 
     import Card from "$lib/Components/common/Card.svelte";
 	import FormTitle from "$lib/Components/Marketing/FormTitle.svelte";
